@@ -1,20 +1,20 @@
 import type { FC } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
 
 import { COLORS, OBJECT_SIZE, SONG, minMax } from "./data";
 import { Notes } from "./Notes";
 import { GridWithPlayedNotes } from "./GridWithPlayedNotes";
 
 const App: FC = () => {
+  const initialCameraZ = 4;
   const song = SONG;
   const [low, high] = minMax(song);
   const gridSize = high - low;
   return (
-    <Canvas camera={{ position: [0, 2, 4] }}>
+    <Canvas camera={{ position: [0, 2, initialCameraZ] }}>
       <ambientLight />
       <directionalLight position={[-150, 150, -150]} intensity={0.55} />
-      <Notes song={SONG} color={COLORS[0]} objectSize={OBJECT_SIZE} />
+      <Notes song={song} color={COLORS[0]} objectSize={OBJECT_SIZE} />
       <GridWithPlayedNotes
         gridSize={gridSize}
         objectSize={OBJECT_SIZE}
@@ -22,8 +22,9 @@ const App: FC = () => {
         gridThickness={OBJECT_SIZE * 0.101}
         playedNotesColor={COLORS[2]}
         playedNotesThickness={OBJECT_SIZE * 0.102}
+        initialCameraZ={initialCameraZ}
+        songLength={song.length}
       />
-      <OrbitControls />
     </Canvas>
   );
 };

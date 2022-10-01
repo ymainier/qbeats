@@ -19,12 +19,13 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
         const note = song[i][j];
         object.position.set(note - low - half, 0, -i);
         object.updateMatrix();
-        n++;
         ref.current.setMatrixAt(n, object.matrix);
+        n++;
       }
     }
     ref.current.instanceMatrix.needsUpdate = true;
   }, [song]);
+
   return (
     <instancedMesh ref={ref} args={[null, null, song.flat().length]}>
       <boxGeometry args={[objectSize, 0.1, objectSize]} />
