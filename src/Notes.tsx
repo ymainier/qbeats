@@ -1,14 +1,39 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useEffect, useRef } from "react";
 import type { FC } from "react";
-import * as THREE from "three";
+import { InstancedMesh, Object3D } from "three";
+import { useFrame } from "@react-three/fiber";
 import { minMax } from "./data";
 import type { SongType } from "./data";
 
 type NotesProps = { song: SongType; color: string; objectSize: number };
 export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
-  const ref = useRef<THREE.InstancedMesh>();
+  const ref = useRef<InstancedMesh>();
+  const isPausedRef = useRef(false);
+
+  useEffect(() => {
+    const onKeyDown = ({ code }: KeyboardEvent) => {
+      if (code === 'Space') {
+        isPausedRef.current = !isPausedRef.current;
+      }
+    };
+    window.addEventListener("keydown", onKeyDown, false);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown, false);
+    };
+  }, []);
+
+  useFrame(({ camera }, delta) => {
+    if (!ref.current || isPausedRef.current) return;
+    if (ref.current.position.z > song.length + 2) {
+      ref.current.position.z = 0;
+      isPausedRef.current = true;
+    } else {
+      ref.current.position.z += delta;
+    }
+  });
+
   useLayoutEffect(() => {
-    const object = new THREE.Object3D();
+    const object = new Object3D();
     const [low, high] = minMax(song);
     const width = high - low;
     let n = 0;

@@ -22,8 +22,6 @@ const App: FC = () => {
         gridThickness={OBJECT_SIZE * 0.101}
         playedNotesColor={COLORS[2]}
         playedNotesThickness={OBJECT_SIZE * 0.102}
-        initialCameraZ={initialCameraZ}
-        songLength={song.length}
       />
     </Canvas>
   );
