@@ -10,6 +10,7 @@ const App: FC = () => {
   const song = SONG;
   const [low, high] = minMax(song);
   const gridSize = high - low;
+
   return (
     <Canvas camera={{ position: [0, 2, initialCameraZ] }}>
       <ambientLight />

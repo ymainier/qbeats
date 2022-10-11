@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { Grid } from "./Grid";
 import { PlayedNotes } from "./PlayedNotes";
-import { useNotes } from "./hooks";
+import { usePlayedNotes } from "./hooks";
 
 type GridWithPlayedNotesProps = {
   gridSize: number;
@@ -19,7 +19,7 @@ export const GridWithPlayedNotes: FC<GridWithPlayedNotesProps> = ({
   playedNotesColor,
   playedNotesThickness,
 }) => {
-  const notes = useNotes();
+  const notes = usePlayedNotes();
 
   return (
     <group>
