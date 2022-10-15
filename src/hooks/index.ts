@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { MutableRefObject } from "react";
 import { useThree } from "@react-three/fiber";
 import { KEYCODES_TO_NOTES } from "../data";
 import type { NoteType } from "../data";
+import { Clock } from "../clock";
 
 function listen(
   onDown: (note: NoteType) => void,
@@ -44,43 +46,95 @@ export function usePlayedNotes(): Array<NoteType> {
   return playedNotes;
 }
 
-type TimedNote = { note: NoteType; start: number; stop?: number };
+type PendingTimedNote = { note: NoteType; start: number };
+type TimedNote = PendingTimedNote & { stop: number };
 
-export function useNotes(): Array<TimedNote> {
-  const get = useThree((state) => state.get);
-  const [timedNotes, setTimedNotes] = useState<Array<TimedNote>>([]);
+const sameNoteAs =
+  (note: NoteType) =>
+  ({ note: _note }: PendingTimedNote | TimedNote) =>
+    note === _note;
+
+class TimedNotesQueue {
+  #queued: Array<TimedNote> = [];
+  #processed: Array<TimedNote> = [];
+  #pending: Array<PendingTimedNote> = [];
+  #clock: Clock;
+
+  constructor(clock: Clock) {
+    this.#clock = clock;
+  }
+
+  clear(): void {
+    this.#queued = [];
+    this.#processed = [];
+    this.#pending = [];
+  }
+
+  start(note: NoteType) {
+    if (this.#pending.some(sameNoteAs(note))) return;
+    this.#pending.push({ note, start: this.#clock.getElapsedTime() });
+  }
+
+  stop(note: NoteType) {
+    const maybePending = this.#pending.find(sameNoteAs(note));
+    if (maybePending == null) return;
+    this.#queued.push({ ...maybePending, stop: this.#clock.getElapsedTime() });
+    this.#pending = this.#pending.filter(({ note: _note }) => note !== _note);
+  }
+
+  flush(): Array<TimedNote> {
+    const queued = this.#queued;
+    this.#queued = [];
+    this.#processed = this.#processed.concat(queued);
+    return queued;
+  }
+}
+
+export function useTimedNotesQueue(clock: Clock) {
+  const timedNotesQueueRef = useRef(new TimedNotesQueue(clock));
   useEffect(() => {
     return listen(
-      (note) =>
-        setTimedNotes((timedNotes) => {
-          // @ts-ignore
-          const clock = get().qClock;
+      (note) => timedNotesQueueRef.current.start(note),
+      (note) => timedNotesQueueRef.current.stop(note)
+    );
+  }, []);
+  return timedNotesQueueRef;
+}
 
-          return timedNotes.some(
-            ({ note: _note, stop }) => _note === note && stop == null
-          )
-            ? timedNotes
-            : [...timedNotes, { note, start: clock.getElapsedTime() }];
-        }),
-      (note) =>
-        setTimedNotes((timedNotes) => {
+type PrevTimedNote = { note: NoteType; start: number; stop?: number };
+
+export function useNotes(): MutableRefObject<
+  Map<NoteType, Array<PrevTimedNote>>
+> {
+  const get = useThree((state) => state.get);
+  const notesMapRef = useRef(new Map<NoteType, Array<PrevTimedNote>>());
+  useEffect(() => {
+    return listen(
+      (note) => {
+        let noteArray = notesMapRef.current.get(note);
+        if (!noteArray) {
+          noteArray = [];
+          notesMapRef.current.set(note, noteArray);
+        }
+        if (
+          noteArray.length === 0 ||
+          noteArray[noteArray.length - 1].stop != null
+        ) {
           // @ts-ignore
-          const clock = get().qClock;
-          const reversed = [...timedNotes].reverse();
-          const reversedIndex = reversed.findIndex(
-            ({ note: _note, stop }) => note === _note && stop == null
-          );
-          if (reversedIndex === -1) return timedNotes;
-          const { start } = reversed[reversedIndex];
-          const newTimedNotes = [...timedNotes];
-          newTimedNotes.splice(timedNotes.length - 1 - reversedIndex, 1, {
-            note,
-            start,
-            stop: clock.getElapsedTime(),
-          });
-          return newTimedNotes;
-        })
+          const start = get().qClock.getElapsedTime();
+          noteArray.push({ note, start });
+        }
+      },
+      (note) => {
+        let noteArray = notesMapRef.current.get(note);
+        if (noteArray == null || noteArray.length === 0) return;
+        const lastNote = noteArray[noteArray.length - 1];
+        if (lastNote == null || lastNote.stop != null) return;
+        // @ts-ignore
+        const stop = get().qClock.getElapsedTime();
+        lastNote.stop = stop;
+      }
     );
   }, [get]);
-  return timedNotes;
+  return notesMapRef;
 }
