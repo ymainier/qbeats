@@ -25,28 +25,9 @@ const PlayedNote: FC<PlayedNoteProps> = ({
 
   return (
     <group>
-      {/* @ts-ignore */}
-      <Box
-        args={[thickness, thickness, objectSize + thickness]}
-        position={[-(gridSize + objectSize) / 2 + note - 1, 0, 0]}
-        material={material}
-      />
-      {/* @ts-ignore */}
-      <Box
-        args={[thickness, thickness, objectSize + thickness]}
-        position={[-(gridSize + objectSize) / 2 + note, 0, 0]}
-        material={material}
-      />
-      {/* @ts-ignore */}
       <Box
         args={[objectSize + thickness, thickness, thickness]}
-        position={[-(gridSize + objectSize + 1) / 2 + note, 0, -objectSize / 2]}
-        material={material}
-      />
-      {/* @ts-ignore */}
-      <Box
-        args={[objectSize + thickness, thickness, thickness]}
-        position={[-(gridSize + objectSize + 1) / 2 + note, 0, objectSize / 2]}
+        position={[-(gridSize + objectSize + 1) / 2 + note, 0, 0]}
         material={material}
       />
     </group>

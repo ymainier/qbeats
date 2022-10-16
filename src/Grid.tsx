@@ -19,27 +19,11 @@ export const Grid: FC<GridProps> = ({
   const material = useMemo(() => new MeshLambertMaterial({ color }), [color]);
   return (
     <group>
-      {/* @ts-ignore */}
       <Box
         args={[(gridSize + 1) * objectSize, thickness, thickness]}
-        position={[0, 0, -objectSize / 2]}
+        position={[0, 0, 0]}
         material={material}
       />
-      {/* @ts-ignore */}
-      <Box
-        args={[(gridSize + 1) * objectSize, thickness, thickness]}
-        position={[0, 0, objectSize / 2]}
-        material={material}
-      />
-      {Array.from({ length: gridSize + 2 }).map((_, i) => (
-        // @ts-ignore
-        <Box
-          key={i}
-          args={[thickness, thickness, objectSize + thickness]}
-          position={[-(gridSize + objectSize) / 2 + i, 0, 0]}
-          material={material}
-        />
-      ))}
     </group>
   );
 };

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { FC } from "react";
 import { Group } from "three";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import { Instances, Instance } from "@react-three/drei";
 import { minMax } from "./data";
 import type { SongType } from "./data";
@@ -14,19 +14,11 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
   const half = (high - low) / 2;
   const ref = useRef<Group>(null);
   const previousElapsedTimeRef = useRef(0);
-  const [qClock] = useState(new Clock());
-  const timedNotesQueueRef = useTimedNotesQueue(qClock);
-  const set = useThree((state) => state.set);
-  const get = useThree((state) => state.get);
-  useEffect(() => {
-    // @ts-ignore
-    set({ qClock });
-  }, [set, qClock]);
+  const [clock] = useState(() => new Clock());
+  const timedNotesQueueRef = useTimedNotesQueue(clock);
 
   useEffect(() => {
     const onKeyDown = ({ code }: KeyboardEvent) => {
-      // @ts-ignore
-      const clock = get().qClock;
       if (code === "Space") {
         if (clock.isRunning()) {
           clock.pause();
@@ -39,11 +31,9 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
     return () => {
       window.removeEventListener("keydown", onKeyDown, false);
     };
-  }, [get]);
+  }, [clock]);
 
-  useFrame(({ get }) => {
-    // @ts-ignore
-    const clock = get().qClock;
+  useFrame(() => {
     const elapsedTime = clock.getElapsedTime();
     const delta = elapsedTime - previousElapsedTimeRef.current;
     previousElapsedTimeRef.current = elapsedTime;
@@ -60,7 +50,6 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
   useFrame(() => {
     const newTimedNotes = timedNotesQueueRef.current.flush();
     if (newTimedNotes.length > 0) {
-      console.time("noteFinder");
       song.forEach((line, i) =>
         line.forEach((note, j) => {
           newTimedNotes.forEach((timedNote) => {
@@ -78,7 +67,6 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
           });
         })
       );
-      console.timeEnd("noteFinder");
     }
   });
 
@@ -88,13 +76,17 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
         <boxGeometry args={[objectSize, 0.1, objectSize]} />
         <meshLambertMaterial />
         {song.flatMap((line, i) =>
-          line.map((note, j) => (
-            <Instance
-              key={`${i}-${j}`}
-              color={color}
-              position={[note - low - half, 0, -i]}
-            />
-          ))
+          line.map((note, j) => {
+            const duration = 1;
+            return (
+              <Instance
+                key={`${i}-${j}`}
+                color={color}
+                position={[note - low - half, 0, -i - duration / 2]}
+                scale={[1, 1, duration]}
+              />
+            );
+          })
         )}
       </Instances>
     </group>
