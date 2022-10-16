@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 
 import { COLORS, OBJECT_SIZE, SONG, minMax } from "./data";
 import { Notes } from "./Notes";
-import { GridWithPlayedNotes } from "./GridWithPlayedNotes";
+import { KeyboardLineWithPlayedNotes } from "./KeyboardLineWithPlayedNotes";
 
 const App: FC = () => {
   const initialCameraZ = 4;
@@ -16,7 +16,7 @@ const App: FC = () => {
       <ambientLight />
       <directionalLight position={[-150, 150, -150]} intensity={0.55} />
       <Notes song={song} color={COLORS[0]} objectSize={OBJECT_SIZE} />
-      <GridWithPlayedNotes
+      <KeyboardLineWithPlayedNotes
         gridSize={gridSize}
         objectSize={OBJECT_SIZE}
         gridColor={COLORS[1]}

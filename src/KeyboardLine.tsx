@@ -3,14 +3,14 @@ import type { FC } from "react";
 import { Box } from "@react-three/drei";
 import { MeshLambertMaterial } from "three";
 
-type GridProps = {
+type KeyboardLineProps = {
   thickness: number;
   gridSize: number;
   objectSize: number;
   color: string;
 };
 
-export const Grid: FC<GridProps> = ({
+export const KeyboardLine: FC<KeyboardLineProps> = ({
   thickness,
   gridSize,
   objectSize,

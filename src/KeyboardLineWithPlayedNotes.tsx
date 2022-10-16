@@ -1,9 +1,9 @@
 import type { FC } from "react";
-import { Grid } from "./Grid";
+import { KeyboardLine } from "./KeyboardLine";
 import { PlayedNotes } from "./PlayedNotes";
 import { usePlayedNotes } from "./hooks";
 
-type GridWithPlayedNotesProps = {
+type KeyboardLineWithPlayedNotesProps = {
   gridSize: number;
   objectSize: number;
   gridColor: string;
@@ -11,7 +11,7 @@ type GridWithPlayedNotesProps = {
   playedNotesColor: string;
   playedNotesThickness: number;
 };
-export const GridWithPlayedNotes: FC<GridWithPlayedNotesProps> = ({
+export const KeyboardLineWithPlayedNotes: FC<KeyboardLineWithPlayedNotesProps> = ({
   gridSize,
   objectSize,
   gridColor,
@@ -23,7 +23,7 @@ export const GridWithPlayedNotes: FC<GridWithPlayedNotesProps> = ({
 
   return (
     <group>
-      <Grid
+      <KeyboardLine
         thickness={gridThickness}
         gridSize={gridSize}
         objectSize={objectSize}
