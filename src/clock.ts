@@ -8,6 +8,10 @@ export class Clock {
     return performance.now() / 1000;
   }
 
+  isStarted(): boolean {
+    return this.#isStarted;
+  }
+
   start() {
     if (this.isRunning()) return;
     const now = this.#now();
@@ -33,12 +37,12 @@ export class Clock {
   }
 
   getElapsedTime() {
-    if (!this.#isStarted) return 0;
+    if (!this.isStarted()) return 0;
     if (this.#isPaused) return this.#pauseTime - this.#startTime;
     return this.#now() - this.#startTime;
   }
 
   isRunning() {
-    return this.#isStarted && !this.#isPaused;
+    return this.isStarted() && !this.#isPaused;
   }
 }
