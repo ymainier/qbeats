@@ -7,7 +7,7 @@ export const COLORS = colors[6];
 export const ALL_NOTES = [1, 2, 3, 4, 5, 6, 7, 8] as const;
 
 export type NoteType = typeof ALL_NOTES[number];
-export type SongType = Array<Array<NoteType>>;
+export type SongType = Array<Array<{ note: NoteType; duration: number }>>;
 
 export const KEYCODES_TO_NOTES: Record<string, NoteType> = {
   KeyA: 1,
@@ -26,8 +26,8 @@ export function isNote(element: unknown): element is NoteType {
 }
 
 export function minMax(song: SongType): [NoteType, NoteType] {
-  const low = Math.min(...song.flat());
-  const high = Math.max(...song.flat());
+  const low = Math.min(...song.flat().map(({ note }) => note));
+  const high = Math.max(...song.flat().map(({ note }) => note));
   return [
     isNote(low) ? low : ALL_NOTES[0],
     isNote(high) ? high : ALL_NOTES[ALL_NOTES.length - 1],
@@ -37,9 +37,9 @@ export function minMax(song: SongType): [NoteType, NoteType] {
 // prettier-ignore
 const TEST: SongType = [
   [], [], [], [],
-  [1, 2], [], [3, 4], [],
-  [5], [6], [7], [8],
-  [4], [3], [2], [1],
-]
+  [{note: 1, duration: 2}, {note: 3, duration: 2}], [], [{note: 2, duration: 2}, {note: 4, duration: 2}], [],
+  [{note: 5, duration: 4}], [{note: 6, duration: 1}], [{note: 7, duration: 1}], [{note: 8, duration: 1}],
+  [{note: 4, duration: 4}], [{note: 3, duration: 1}], [{note: 2, duration: 1}], [{note: 1, duration: 1}],
+];
 
 export const SONG = TEST;

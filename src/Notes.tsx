@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { FC } from "react";
 import { Group, Color } from "three";
 import { useFrame } from "@react-three/fiber";
-import { Instances, Instance } from "@react-three/drei";
+import { Instances, Instance, Box } from "@react-three/drei";
 
 import { minMax } from "./data";
 import type { SongType, NoteType } from "./data";
@@ -66,9 +66,8 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
     const newTimedNotes = timedNotesQueueRef.current.flush();
     if (newTimedNotes.length > 0) {
       song.forEach((line, i) =>
-        line.forEach((note, j) => {
+        line.forEach(({ note, duration }, j) => {
           newTimedNotes.forEach((timedNote) => {
-            const duration = 1;
             if (
               note === timedNote.note &&
               timedNote.start >= i - threshold &&
@@ -87,12 +86,15 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
 
   return (
     <group ref={ref}>
+      <Box
+        args={[high - low + objectSize, 0.01, song.length]}
+        position={[0, -0.1, -song.length / 2]}
+      />
       <Instances limit={song.flat().length}>
         <boxGeometry args={[objectSize, 0.1, objectSize]} />
         <meshLambertMaterial />
         {song.flatMap((line, i) =>
-          line.map((note) => {
-            const duration = 1;
+          line.map(({ note, duration }) => {
             return (
               <Note
                 key={`${i}-${note}`}
@@ -122,7 +124,7 @@ type NoteProps = {
     position: number;
     matched: Set<`${number}-${NoteType}`>;
   }>;
-  threshold: number
+  threshold: number;
 };
 
 const Note: FC<NoteProps> = ({
@@ -134,7 +136,7 @@ const Note: FC<NoteProps> = ({
   notesRef,
   threshold,
 }) => {
-  const ref = useRef<{color: Color}>();
+  const ref = useRef<{ color: Color }>();
   useFrame(() => {
     if (!ref.current) return;
     if (notesRef.current.position === 0) {
