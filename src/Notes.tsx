@@ -88,7 +88,7 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
     <group ref={ref}>
       <Box
         args={[high - low + objectSize, 0.01, song.length]}
-        position={[0, -0.1, -song.length / 2]}
+        position={[0, -0.05, -song.length / 2]}
       />
       <Instances limit={song.flat().length}>
         <boxGeometry args={[objectSize, 0.1, objectSize]} />

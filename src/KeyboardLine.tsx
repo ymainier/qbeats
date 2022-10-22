@@ -20,7 +20,7 @@ export const KeyboardLine: FC<KeyboardLineProps> = ({
   return (
     <group>
       <Box
-        args={[(gridSize + 1) * objectSize, thickness, thickness]}
+        args={[gridSize * objectSize, thickness, thickness]}
         position={[0, 0, 0]}
         material={material}
       />
