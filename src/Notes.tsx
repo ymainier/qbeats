@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import type { FC } from "react";
 import { Group, Color } from "three";
 import { useFrame } from "@react-three/fiber";
@@ -7,7 +7,6 @@ import { Instances, Instance, Box } from "@react-three/drei";
 import { minMax } from "./data";
 import type { SongType, NoteType } from "./data";
 import { useTimedNotesQueue } from "./hooks";
-import { Clock } from "./clock";
 import { useQBeatsStore } from "./store";
 
 type NotesProps = { song: SongType; color: string; objectSize: number };
@@ -18,25 +17,30 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
   const amplitude = low + half;
   const ref = useRef<Group>(null);
   const previousElapsedTimeRef = useRef(0);
-  const [clock] = useState(() => new Clock());
-  const timedNotesQueueRef = useTimedNotesQueue(clock);
   const notesRef = useRef({
     position: 0,
     matched: new Set<`${number}-${NoteType}`>(),
   });
   const indentScore = useQBeatsStore((state) => state.indentScore);
   const resetScore = useQBeatsStore((state) => state.resetScore);
+  const clockStart = useQBeatsStore((state) => state.clockStart);
+  const clockPause = useQBeatsStore((state) => state.clockPause);
+  const clockStop = useQBeatsStore((state) => state.clockStop);
+  const clockGetTime = useQBeatsStore((state) => state.clockGetTime);
+  const clockIsRunning = useQBeatsStore((state) => state.clockIsRunning);
+  const clockIsPaused = useQBeatsStore((state) => state.clockIsPaused);
+  const timedNotesQueueRef = useTimedNotesQueue(clockGetTime);
 
   useEffect(() => {
-    const onKeyDown = ({ code }: KeyboardEvent) => {
+    const onKeyDown = async ({ code }: KeyboardEvent) => {
       if (code === "Space") {
-        if (clock.isRunning()) {
-          clock.pause();
+        if (clockIsRunning()) {
+          clockPause();
         } else {
-          if (!clock.isStarted()) {
+          if (!clockIsPaused()) {
             resetScore();
           }
-          clock.start();
+          await clockStart();
         }
       }
     };
@@ -44,16 +48,17 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
     return () => {
       window.removeEventListener("keydown", onKeyDown, false);
     };
-  }, [clock, resetScore]);
+  }, [resetScore, clockStart, clockPause, clockIsRunning, clockIsPaused]);
 
   useFrame(() => {
-    const elapsedTime = clock.getElapsedTime();
+    // const elapsedTime = clock.getElapsedTime();
+    const elapsedTime = clockGetTime();
     const delta = elapsedTime - previousElapsedTimeRef.current;
     previousElapsedTimeRef.current = elapsedTime;
     if (!ref.current) return;
     if (ref.current.position.z > song.length + 2) {
       ref.current.position.z = 0;
-      clock.stop();
+      clockStop();
       previousElapsedTimeRef.current = 0;
       notesRef.current.matched = new Set();
     } else {

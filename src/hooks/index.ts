@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { KEYCODES_TO_NOTES } from "../data";
 import type { NoteType } from "../data";
-import { Clock } from "../clock";
 
 function listen(
   onDown: (note: NoteType) => void,
@@ -56,10 +55,10 @@ class TimedNotesQueue {
   #queued: Array<TimedNote> = [];
   #processed: Array<TimedNote> = [];
   #pending: Array<PendingTimedNote> = [];
-  #clock: Clock;
+  #getTime: () => number;
 
-  constructor(clock: Clock) {
-    this.#clock = clock;
+  constructor(getTime: () => number) {
+    this.#getTime = getTime;
   }
 
   clear(): void {
@@ -70,13 +69,13 @@ class TimedNotesQueue {
 
   start(note: NoteType) {
     if (this.#pending.some(sameNoteAs(note))) return;
-    this.#pending.push({ note, start: this.#clock.getElapsedTime() });
+    this.#pending.push({ note, start: this.#getTime() });
   }
 
   stop(note: NoteType) {
     const maybePending = this.#pending.find(sameNoteAs(note));
     if (maybePending == null) return;
-    this.#queued.push({ ...maybePending, stop: this.#clock.getElapsedTime() });
+    this.#queued.push({ ...maybePending, stop: this.#getTime() });
     this.#pending = this.#pending.filter(({ note: _note }) => note !== _note);
   }
 
@@ -88,8 +87,8 @@ class TimedNotesQueue {
   }
 }
 
-export function useTimedNotesQueue(clock: Clock) {
-  const timedNotesQueueRef = useRef(new TimedNotesQueue(clock));
+export function useTimedNotesQueue(getTime: () => number) {
+  const timedNotesQueueRef = useRef(new TimedNotesQueue(getTime));
   useEffect(() => {
     return listen(
       (note) => timedNotesQueueRef.current.start(note),
