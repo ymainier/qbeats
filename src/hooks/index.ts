@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { KEYCODES_TO_NOTES } from "../data";
 import type { NoteType } from "../data";
+import { useQBeatsStore } from "../store";
 
 function listen(
   onDown: (note: NoteType) => void,
@@ -28,18 +29,33 @@ function listen(
 
 export function usePlayedNotes(): Array<NoteType> {
   const [playedNotes, setPlayedNotes] = useState<Array<NoteType>>([]);
+  const notesRef = useRef(playedNotes);
+  const trigger = useQBeatsStore((state) => state.trigger);
+  const release = useQBeatsStore((state) => state.release);
   useEffect(() => {
     return listen(
-      (note) =>
-        setPlayedNotes((notes) =>
-          notes.includes(note) ? notes : [...notes, note]
-        ),
-      (note) =>
-        setPlayedNotes((notes) =>
-          notes.includes(note) ? notes.filter((_note) => _note !== note) : notes
-        )
+      (note) => {
+        if (!notesRef.current.includes(note)) {
+          trigger(note);
+        }
+        setPlayedNotes((notes) => {
+          const newNotes = notes.includes(note) ? notes : [...notes, note];
+          notesRef.current = newNotes;
+          return newNotes;
+        });
+      },
+      (note) => {
+        release(note);
+        setPlayedNotes((notes) => {
+          const newNotes = notes.includes(note)
+            ? notes.filter((_note) => _note !== note)
+            : notes;
+          notesRef.current = newNotes;
+          return newNotes;
+        });
+      }
     );
-  }, []);
+  }, [trigger, release]);
   return playedNotes;
 }
 
