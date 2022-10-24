@@ -10,10 +10,11 @@ function toToneNote(note: NoteType): string {
 }
 
 let boop: Tone.Synth | null = null;
-let fakePiano: Tone.PolySynth | null = null;
+let fakePiano: Tone.Sampler | null = null;
 
 function makeBoop(): Tone.Synth {
   return new Tone.Synth({
+    volume: -20,
     oscillator: {
       // @ts-ignore
       type: "sine",
@@ -28,8 +29,20 @@ function makeBoop(): Tone.Synth {
   }).toDestination();
 }
 
-function makeFakePiano(): Tone.PolySynth {
-  return new Tone.PolySynth(Tone.Synth).toDestination();
+function makeFakePiano(): Tone.Sampler {
+  // @ts-ignore
+  const synth = new Tone.Sampler({
+    urls: {
+      A4: "A4v1.mp3",
+      C4: "C4v1.mp3",
+      "D#4": "Ds4v1.mp3",
+      "F#4": "Fs4v1.mp3",
+    },
+    baseUrl: "./",
+  }).toDestination();
+  synth.volume.value = 10;
+  console.log(synth.volume.value, synth.volume.minValue, synth.volume.maxValue);
+  return synth;
 }
 
 type QBeatsState = {
