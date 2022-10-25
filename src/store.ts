@@ -9,12 +9,13 @@ function toToneNote(note: NoteType): string {
   return "B4";
 }
 
-let boop: Tone.Synth | null = null;
 let fakePiano: Tone.Sampler | null = null;
+
+const BOOP_VOLUME = -20;
 
 function makeBoop(): Tone.Synth {
   return new Tone.Synth({
-    volume: -20,
+    volume: BOOP_VOLUME,
     oscillator: {
       // @ts-ignore
       type: "sine",
@@ -41,7 +42,6 @@ function makeFakePiano(): Tone.Sampler {
     baseUrl: "./",
   }).toDestination();
   synth.volume.value = 10;
-  console.log(synth.volume.value, synth.volume.minValue, synth.volume.maxValue);
   return synth;
 }
 
@@ -49,6 +49,7 @@ type QBeatsState = {
   score: number;
   isToneActivated: boolean;
   bpm: number;
+  boop: Tone.Synth | null;
   indentScore: () => void;
   resetScore: () => void;
   clockStart: () => Promise<void>;
@@ -59,15 +60,19 @@ type QBeatsState = {
   clockIsPaused: () => boolean;
   trigger: (note: NoteType) => void;
   release: (note: NoteType) => void;
+  toggleBoopVolume: (willEnable: boolean) => void;
+  isBoopEnabled: () => boolean;
 };
 
 export const useQBeatsStore = create<QBeatsState>((set, get) => ({
   score: 0,
   isToneActivated: false,
   bpm: 60,
+  boop: null,
   indentScore: () => set((state) => ({ score: state.score + 1 })),
   resetScore: () => set({ score: 0 }),
   clockStart: async () => {
+    let boop = get().boop;
     if (!boop) {
       boop = makeBoop();
       Tone.Transport.scheduleRepeat(() => {
@@ -81,7 +86,7 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
 
     Tone.Transport.bpm.value = get().bpm;
     Tone.Transport.start();
-    set({ isToneActivated: true });
+    set({ isToneActivated: true, boop });
   },
   clockPause: () => {
     Tone.Transport.pause();
@@ -104,4 +109,14 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
   release: (note: NoteType) => {
     fakePiano?.triggerRelease(toToneNote(note));
   },
+  toggleBoopVolume: (willEnable: boolean) => {
+    const boop = get().boop;
+    if (!boop) return;
+    boop.volume.value = willEnable ? BOOP_VOLUME : boop.volume.minValue
+  },
+  isBoopEnabled: () => {
+    const boop = get().boop;
+    if (!boop) return true;
+    return boop.volume.value === BOOP_VOLUME;
+  }
 }));

@@ -51,7 +51,6 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
   }, [resetScore, clockStart, clockPause, clockIsRunning, clockIsPaused]);
 
   useFrame(() => {
-    // const elapsedTime = clock.getElapsedTime();
     const elapsedTime = clockGetTime();
     const delta = elapsedTime - previousElapsedTimeRef.current;
     previousElapsedTimeRef.current = elapsedTime;

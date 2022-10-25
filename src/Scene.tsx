@@ -7,6 +7,7 @@ import { useControls } from "leva";
 import { COLORS, OBJECT_SIZE, SONG, minMax } from "./data";
 import { Notes } from "./Notes";
 import { KeyboardLineWithPlayedNotes } from "./KeyboardLineWithPlayedNotes";
+import { useQBeatsStore } from "./store";
 
 export const Scene: FC = () => {
   const song = SONG;
@@ -15,19 +16,16 @@ export const Scene: FC = () => {
   const camera = useThree((state) => state.camera);
   const viewport = useThree((state) => state.viewport);
   const groupRef = useRef<Group>(null);
+  const toggleBoopVolume = useQBeatsStore((state) => state.toggleBoopVolume);
+  const isBoopEnabled = useQBeatsStore((state) => state.isBoopEnabled);
 
+  useControls('position', {
+    x: { value: 0, step: 0.1, onChange: (x) => camera.position.x = x },
+    y: { value: 3, step: 0.1, onChange: (y) => camera.position.y = y },
+    z: { value: 6, step: 0.1, onChange: (z) => camera.position.z = z },
+  });
   useControls({
-    position: {
-      value: {
-        x: 0,
-        y: 3,
-        z: 6,
-      },
-      step: 0.1,
-      onChange({ x, y, z }) {
-        camera.position.set(x, y, z);
-      },
-    },
+    boop: { value: isBoopEnabled(), onChange: (enabled) => toggleBoopVolume(enabled) },
   });
   useLayoutEffect(() => {
     camera.position.set(0, 3, 6);
