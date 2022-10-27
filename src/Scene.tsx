@@ -19,19 +19,22 @@ export const Scene: FC = () => {
   const toggleBoopVolume = useQBeatsStore((state) => state.toggleBoopVolume);
   const isBoopEnabled = useQBeatsStore((state) => state.isBoopEnabled);
 
-  useControls('position', {
-    x: { value: 0, step: 0.1, onChange: (x) => camera.position.x = x },
-    y: { value: 3, step: 0.1, onChange: (y) => camera.position.y = y },
-    z: { value: 6, step: 0.1, onChange: (z) => camera.position.z = z },
+  useControls("position", {
+    x: { value: 0, step: 0.1, onChange: (x) => (camera.position.x = x) },
+    y: { value: 3, step: 0.1, onChange: (y) => (camera.position.y = y) },
+    z: { value: 6, step: 0.1, onChange: (z) => (camera.position.z = z) },
   });
   useControls({
-    boop: { value: isBoopEnabled(), onChange: (enabled) => toggleBoopVolume(enabled) },
+    boop: {
+      value: isBoopEnabled(),
+      onChange: (enabled) => toggleBoopVolume(enabled),
+    },
   });
   useLayoutEffect(() => {
     camera.position.set(0, 3, 6);
   }, [camera]);
   useLayoutEffect(() => {
-    const scale = viewport.getCurrentViewport().width / (gridSize + 3)
+    const scale = viewport.getCurrentViewport().width / (gridSize + 3);
     groupRef.current?.scale.set(scale, scale, scale);
   }, [gridSize, viewport]);
 

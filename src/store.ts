@@ -112,11 +112,11 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
   toggleBoopVolume: (willEnable: boolean) => {
     const boop = get().boop;
     if (!boop) return;
-    boop.volume.value = willEnable ? BOOP_VOLUME : boop.volume.minValue
+    boop.volume.value = willEnable ? BOOP_VOLUME : boop.volume.minValue;
   },
   isBoopEnabled: () => {
     const boop = get().boop;
     if (!boop) return true;
     return boop.volume.value === BOOP_VOLUME;
-  }
+  },
 }));
