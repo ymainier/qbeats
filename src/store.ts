@@ -2,11 +2,20 @@ import create from "zustand";
 import * as Tone from "tone";
 import type { NoteType } from "./data";
 
+// prettier-ignore
+const NOTE_TO_TONE: Record<NoteType, string> = {
+  1: "C4", 1.5: "C#4",
+  2: "D4",
+  2.5: "D#4", 3: "E4",
+  4: "F4", 4.5: "F#4",
+  5: "G4", 5.5: "G#4",
+  6: "A4", 6.5: "A#4",
+  7: "B4",
+  8: "C5",
+};
+
 function toToneNote(note: NoteType): string {
-  if (note === 8) return "C5";
-  if (note <= 5) return `${String.fromCharCode(66 + note)}4`;
-  if (note === 6) return "A4";
-  return "B4";
+  return NOTE_TO_TONE[note];
 }
 
 let fakePiano: Tone.Sampler | null = null;

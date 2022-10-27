@@ -4,18 +4,25 @@ export const OBJECT_SIZE = 1;
 
 export const COLORS = colors[6];
 
-export const ALL_NOTES = [1, 2, 3, 4, 5, 6, 7, 8] as const;
+export const ALL_NOTES = [
+  1, 1.5, 2, 2.5, 3, 4, 4.5, 5, 5.5, 6, 6.5, 7, 8,
+] as const;
 
 export type NoteType = typeof ALL_NOTES[number];
 export type SongType = Array<Array<{ note: NoteType; duration: number }>>;
 
 export const KEYCODES_TO_NOTES: Record<string, NoteType> = {
   KeyA: 1,
+  KeyW: 1.5,
   KeyS: 2,
+  KeyE: 2.5,
   KeyD: 3,
   KeyF: 4,
+  KeyT: 4.5,
   KeyG: 5,
+  KeyY: 5.5,
   KeyH: 6,
+  KeyU: 6.5,
   KeyJ: 7,
   KeyK: 8,
 };
@@ -42,7 +49,7 @@ const HAPPY_BIRTHDAY: SongType = [
   [{note: 2, duration: 2}], [], [{note: 1, duration: 2}], [], [{note: 5, duration: 2}], [],
   [{note: 4, duration: 4}], [], [], [], [{note: 1, duration: 1}], [{note: 1, duration: 1}],
   [{note: 8, duration: 2}], [], [{note: 6, duration: 2}], [], [{note: 4, duration: 2}], [],
-  [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 7, duration: 1}], [{note: 7, duration: 1}],
+  [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 6.5, duration: 1}], [{note: 6.5, duration: 1}],
   [{note: 6, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 5, duration: 2}], [],
   [{note: 4, duration: 4}], [], [], [], [], [],
 ];
