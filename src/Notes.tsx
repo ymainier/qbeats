@@ -155,7 +155,7 @@ const Note: FC<NoteProps> = ({
     <Instance
       ref={ref}
       position={[note - amplitude, 0, -start - duration / 2]}
-      scale={[1, 1, duration]}
+      scale={[1, 1, duration - 0.1]}
       color={color}
     />
   );

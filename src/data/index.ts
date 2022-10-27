@@ -35,11 +35,16 @@ export function minMax(song: SongType): [NoteType, NoteType] {
 }
 
 // prettier-ignore
-const TEST: SongType = [
-  [], [], [], [],
-  [{note: 1, duration: 2}, {note: 3, duration: 2}], [], [{note: 2, duration: 2}, {note: 4, duration: 2}], [],
-  [{note: 5, duration: 4}], [{note: 6, duration: 1}], [{note: 7, duration: 1}], [{note: 8, duration: 1}],
-  [{note: 4, duration: 4}], [{note: 3, duration: 1}], [{note: 2, duration: 1}], [{note: 1, duration: 1}],
+const HAPPY_BIRTHDAY: SongType = [
+  [], [], [], [], [{note: 1, duration: 1}], [{note: 1, duration: 1}],
+  [{note: 2, duration: 2}], [], [{note: 1, duration: 2}], [], [{note: 4, duration: 2}], [],
+  [{note: 3, duration: 4}], [], [], [], [{note: 1, duration: 1}], [{note: 1, duration: 1}],
+  [{note: 2, duration: 2}], [], [{note: 1, duration: 2}], [], [{note: 5, duration: 2}], [],
+  [{note: 4, duration: 4}], [], [], [], [{note: 1, duration: 1}], [{note: 1, duration: 1}],
+  [{note: 8, duration: 2}], [], [{note: 6, duration: 2}], [], [{note: 4, duration: 2}], [],
+  [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 7, duration: 1}], [{note: 7, duration: 1}],
+  [{note: 6, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 5, duration: 2}], [],
+  [{note: 4, duration: 4}], [], [], [], [], [],
 ];
 
-export const SONG = TEST;
+export const SONG = HAPPY_BIRTHDAY;
