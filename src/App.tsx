@@ -5,6 +5,7 @@ import { Leva } from "leva";
 import { Scene } from "./Scene";
 import { Hud } from "./Hud";
 import { useQBeatsStore } from "./store";
+import { SONG } from "./data";
 
 const App: FC = () => {
   const isDebugging = useQBeatsStore((state) => state.isDebugging);
@@ -24,7 +25,7 @@ const App: FC = () => {
   return (
     <>
       <Canvas>
-        <Scene />
+        <Scene song={SONG} />
       </Canvas>
       <Hud />
       <Leva hidden={!isDebugging} />

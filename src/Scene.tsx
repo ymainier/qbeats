@@ -4,13 +4,12 @@ import { useThree } from "@react-three/fiber";
 import { Stats } from "@react-three/drei";
 import { useControls } from "leva";
 
-import { COLORS, OBJECT_SIZE, SONG, minMax } from "./data";
+import { COLORS, OBJECT_SIZE, SongType, minMax } from "./data";
 import { Notes } from "./Notes";
 import { KeyboardLineWithPlayedNotes } from "./KeyboardLineWithPlayedNotes";
 import { useQBeatsStore } from "./store";
 
-export const Scene: FC = () => {
-  const song = SONG;
+export const Scene: FC<{ song: SongType }> = ({ song }) => {
   const [low, high] = minMax(song);
   const gridSize = high - low + 1;
   const camera = useThree((state) => state.camera);
