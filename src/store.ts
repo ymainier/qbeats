@@ -46,7 +46,8 @@ function makeFakePiano(): Tone.Sampler {
 type QBeatsState = {
   score: number;
   isToneActivated: boolean;
-  bpm: number;
+  speed: number;
+  songSampling: number;
   boop: Tone.Synth | null;
   indentScore: () => void;
   resetScore: () => void;
@@ -65,7 +66,8 @@ type QBeatsState = {
 export const useQBeatsStore = create<QBeatsState>((set, get) => ({
   score: 0,
   isToneActivated: false,
-  bpm: 60,
+  speed: 120,
+  songSampling: 2,
   boop: null,
   indentScore: () => set((state) => ({ score: state.score + 1 })),
   resetScore: () => set({ score: 0 }),
@@ -82,7 +84,7 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
       fakePiano = makeFakePiano();
     }
 
-    Tone.Transport.bpm.value = get().bpm;
+    Tone.Transport.bpm.value = get().speed / get().songSampling;
     Tone.Transport.start();
     set({ isToneActivated: true, boop });
   },
@@ -93,7 +95,7 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
     Tone.Transport.stop();
   },
   clockGetTime: () => {
-    return (Tone.Transport.seconds * get().bpm) / 60;
+    return (Tone.Transport.seconds * get().speed) / 60;
   },
   clockIsRunning: () => {
     return Tone.Transport.state === "started";
