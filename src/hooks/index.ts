@@ -36,7 +36,7 @@ function listenToMidi(
   };
 }
 
-function listen(
+function listenToKeyboard(
   onDown: (note: NoteType) => void,
   onUp: (note: NoteType) => void
 ): () => void {
@@ -75,7 +75,7 @@ export function usePlayedNotes(): Array<NoteType> {
       (note) => setPlayedNotes(addNote(note)),
       (note) => setPlayedNotes(removeNote(note))
     );
-    const cleanup = listen(
+    const cleanupKeyboardListener = listenToKeyboard(
       (note) => {
         if (!notesRef.current.includes(note)) {
           trigger(note);
@@ -97,7 +97,7 @@ export function usePlayedNotes(): Array<NoteType> {
     );
     return () => {
       cleanupMidi();
-      cleanup();
+      cleanupKeyboardListener();
     };
   }, [trigger, release]);
   return playedNotes;
@@ -150,17 +150,17 @@ class TimedNotesQueue {
 export function useTimedNotesQueue(getTime: () => number) {
   const timedNotesQueueRef = useRef(new TimedNotesQueue(getTime));
   useEffect(() => {
-    const cleanupMidi = listenToMidi(
+    const cleanupMidiListener = listenToMidi(
       (note) => timedNotesQueueRef.current.start(note),
       (note) => timedNotesQueueRef.current.stop(note)
     );
-    const cleanup = listen(
+    const cleanupKeyboardListener = listenToKeyboard(
       (note) => timedNotesQueueRef.current.start(note),
       (note) => timedNotesQueueRef.current.stop(note)
     );
     return () => {
-      cleanupMidi();
-      cleanup();
+      cleanupMidiListener();
+      cleanupKeyboardListener();
     }
   }, []);
   return timedNotesQueueRef;
