@@ -11,21 +11,40 @@ export const ALL_NOTES = [
 export type NoteType = typeof ALL_NOTES[number];
 export type SongType = Array<Array<{ note: NoteType; duration: number }>>;
 
+// prettier-ignore
 export const KEYCODES_TO_NOTES: Record<string, NoteType> = {
-  KeyA: 1,
-  KeyW: 1.5,
-  KeyS: 2,
-  KeyE: 2.5,
-  KeyD: 3,
-  KeyF: 4,
-  KeyT: 4.5,
-  KeyG: 5,
-  KeyY: 5.5,
-  KeyH: 6,
-  KeyU: 6.5,
-  KeyJ: 7,
+  KeyA: 1, KeyW: 1.5, KeyS: 2, KeyE: 2.5, KeyD: 3,
+  KeyF: 4, KeyT: 4.5, KeyG: 5, KeyY: 5.5, KeyH: 6, KeyU: 6.5, KeyJ: 7,
   KeyK: 8,
 };
+
+// prettier-ignore
+export const NOTE_TO_TONE: Record<NoteType, string> = {
+  1: "C4", 1.5: "C#4",
+  2: "D4",
+  2.5: "D#4", 3: "E4",
+  4: "F4", 4.5: "F#4",
+  5: "G4", 5.5: "G#4",
+  6: "A4", 6.5: "A#4",
+  7: "B4",
+  8: "C5",
+};
+
+const TONE_TO_NOTE = (Object.entries(NOTE_TO_TONE) as any)
+  // @ts-ignore
+  .reduce((soFar, [note, tone]) => {
+    soFar[tone] = Number(note);
+    return soFar;
+  }, {});
+
+export function midiNoteToNote({name, accidental, octave}: {
+  name: string;
+  accidental: string;
+  octave: number;
+}): NoteType | undefined {
+  const tone = `${name}${accidental ?? ''}${octave}`;
+  return TONE_TO_NOTE[tone];
+}
 
 export function isNote(element: unknown): element is NoteType {
   const all_notes: ReadonlyArray<unknown> = ALL_NOTES;

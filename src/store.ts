@@ -1,18 +1,7 @@
 import create from "zustand";
 import * as Tone from "tone";
+import { NOTE_TO_TONE } from './data';
 import type { NoteType } from "./data";
-
-// prettier-ignore
-const NOTE_TO_TONE: Record<NoteType, string> = {
-  1: "C4", 1.5: "C#4",
-  2: "D4",
-  2.5: "D#4", 3: "E4",
-  4: "F4", 4.5: "F#4",
-  5: "G4", 5.5: "G#4",
-  6: "A4", 6.5: "A#4",
-  7: "B4",
-  8: "C5",
-};
 
 function toToneNote(note: NoteType): string {
   return NOTE_TO_TONE[note];

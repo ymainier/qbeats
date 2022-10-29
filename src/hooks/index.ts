@@ -1,7 +1,40 @@
 import { useEffect, useRef, useState } from "react";
-import { KEYCODES_TO_NOTES } from "../data";
+import { WebMidi } from "webmidi";
+import type { InputChannel } from "webmidi";
+import { KEYCODES_TO_NOTES, midiNoteToNote } from "../data";
 import type { NoteType } from "../data";
 import { useQBeatsStore } from "../store";
+
+const inputChannelRef: { current: InputChannel | null } = {
+  current: null,
+};
+
+function listenToMidi(
+  onPress: (note: NoteType) => void,
+  onRelease: (note: NoteType) => void
+) {
+  WebMidi.enable()
+    .then(() => {
+      if (WebMidi.inputs.length > 0 && WebMidi.inputs[0].channels.length > 1) {
+        inputChannelRef.current = WebMidi.inputs[0].channels[1];
+        inputChannelRef.current.addListener("noteon", ({ note: _note }) => {
+          const note = midiNoteToNote(_note);
+          if (note) onPress(note);
+        });
+        inputChannelRef.current.addListener("noteoff", ({ note: _note }) => {
+          const note = midiNoteToNote(_note);
+          if (note) onRelease(note);
+        });
+      }
+    })
+    .catch((err) => console.error(err));
+
+  return () => {
+    if (inputChannelRef.current) {
+      inputChannelRef.current.removeListener();
+    }
+  };
+}
 
 function listen(
   onDown: (note: NoteType) => void,
@@ -27,19 +60,28 @@ function listen(
   };
 }
 
+const addNote = (note: NoteType) => (notes: Array<NoteType>) =>
+  notes.includes(note) ? notes : [...notes, note];
+const removeNote = (note: NoteType) => (notes: Array<NoteType>) =>
+  notes.includes(note) ? notes.filter((_note) => _note !== note) : notes;
+
 export function usePlayedNotes(): Array<NoteType> {
   const [playedNotes, setPlayedNotes] = useState<Array<NoteType>>([]);
   const notesRef = useRef(playedNotes);
   const trigger = useQBeatsStore((state) => state.trigger);
   const release = useQBeatsStore((state) => state.release);
   useEffect(() => {
-    return listen(
+    const cleanupMidi = listenToMidi(
+      (note) => setPlayedNotes(addNote(note)),
+      (note) => setPlayedNotes(removeNote(note))
+    );
+    const cleanup = listen(
       (note) => {
         if (!notesRef.current.includes(note)) {
           trigger(note);
         }
         setPlayedNotes((notes) => {
-          const newNotes = notes.includes(note) ? notes : [...notes, note];
+          const newNotes = addNote(note)(notes);
           notesRef.current = newNotes;
           return newNotes;
         });
@@ -47,14 +89,16 @@ export function usePlayedNotes(): Array<NoteType> {
       (note) => {
         release(note);
         setPlayedNotes((notes) => {
-          const newNotes = notes.includes(note)
-            ? notes.filter((_note) => _note !== note)
-            : notes;
+          const newNotes = removeNote(note)(notes);
           notesRef.current = newNotes;
           return newNotes;
         });
       }
     );
+    return () => {
+      cleanupMidi();
+      cleanup();
+    };
   }, [trigger, release]);
   return playedNotes;
 }
@@ -106,10 +150,18 @@ class TimedNotesQueue {
 export function useTimedNotesQueue(getTime: () => number) {
   const timedNotesQueueRef = useRef(new TimedNotesQueue(getTime));
   useEffect(() => {
-    return listen(
+    const cleanupMidi = listenToMidi(
       (note) => timedNotesQueueRef.current.start(note),
       (note) => timedNotesQueueRef.current.stop(note)
     );
+    const cleanup = listen(
+      (note) => timedNotesQueueRef.current.start(note),
+      (note) => timedNotesQueueRef.current.stop(note)
+    );
+    return () => {
+      cleanupMidi();
+      cleanup();
+    }
   }, []);
   return timedNotesQueueRef;
 }
