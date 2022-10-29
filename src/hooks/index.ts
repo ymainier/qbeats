@@ -161,7 +161,7 @@ export function useTimedNotesQueue(getTime: () => number) {
     return () => {
       cleanupMidiListener();
       cleanupKeyboardListener();
-    }
+    };
   }, []);
   return timedNotesQueueRef;
 }

@@ -1,6 +1,6 @@
 import create from "zustand";
 import * as Tone from "tone";
-import { NOTE_TO_TONE } from './data';
+import { NOTE_TO_TONE } from "./data";
 import type { NoteType } from "./data";
 
 function toToneNote(note: NoteType): string {
@@ -49,6 +49,7 @@ type QBeatsState = {
   speed: number;
   songSampling: number;
   boop: Tone.Synth | null;
+  isDebugging: boolean;
   indentScore: () => void;
   resetScore: () => void;
   clockStart: () => Promise<void>;
@@ -61,6 +62,7 @@ type QBeatsState = {
   release: (note: NoteType) => void;
   toggleBoopVolume: (willEnable: boolean) => void;
   isBoopEnabled: () => boolean;
+  toggleDebugging: () => void;
 };
 
 export const useQBeatsStore = create<QBeatsState>((set, get) => ({
@@ -69,6 +71,7 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
   speed: 120,
   songSampling: 2,
   boop: null,
+  isDebugging: window.location.hash === "#debug",
   indentScore: () => set((state) => ({ score: state.score + 1 })),
   resetScore: () => set({ score: 0 }),
   clockStart: async () => {
@@ -119,4 +122,5 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
     if (!boop) return true;
     return boop.volume.value === BOOP_VOLUME;
   },
+  toggleDebugging: () => set((state) => ({ isDebugging: !state.isDebugging })),
 }));

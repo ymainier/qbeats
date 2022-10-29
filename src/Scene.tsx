@@ -18,6 +18,7 @@ export const Scene: FC = () => {
   const groupRef = useRef<Group>(null);
   const toggleBoopVolume = useQBeatsStore((state) => state.toggleBoopVolume);
   const isBoopEnabled = useQBeatsStore((state) => state.isBoopEnabled);
+  const isDebugging = useQBeatsStore((state) => state.isDebugging);
 
   useControls("position", {
     x: { value: 0, step: 0.1, onChange: (x) => (camera.position.x = x) },
@@ -40,7 +41,7 @@ export const Scene: FC = () => {
 
   return (
     <group ref={groupRef}>
-      <Stats />
+      {isDebugging && <Stats />}
       <ambientLight />
       <directionalLight position={[-150, 150, -150]} intensity={0.55} />
       <Notes song={song} color={COLORS[0]} objectSize={OBJECT_SIZE} />

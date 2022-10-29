@@ -37,12 +37,16 @@ const TONE_TO_NOTE = (Object.entries(NOTE_TO_TONE) as any)
     return soFar;
   }, {});
 
-export function midiNoteToNote({name, accidental, octave}: {
+export function midiNoteToNote({
+  name,
+  accidental,
+  octave,
+}: {
   name: string;
   accidental: string;
   octave: number;
 }): NoteType | undefined {
-  const tone = `${name}${accidental ?? ''}${octave}`;
+  const tone = `${name}${accidental ?? ""}${octave}`;
   return TONE_TO_NOTE[tone];
 }
 
