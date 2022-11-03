@@ -3,6 +3,8 @@ import * as Tone from "tone";
 import { NOTE_TO_TONE } from "./data";
 import type { NoteType } from "./data";
 
+const MAX_STAGE = 9;
+
 function toToneNote(note: NoteType): string {
   return NOTE_TO_TONE[note];
 }
@@ -50,6 +52,9 @@ type QBeatsState = {
   songSampling: number;
   boop: Tone.Synth | null;
   isDebugging: boolean;
+  isPlaying: boolean;
+  stage: number;
+  hasWon: boolean;
   indentScore: () => void;
   resetScore: () => void;
   clockStart: () => Promise<void>;
@@ -63,6 +68,8 @@ type QBeatsState = {
   toggleBoopVolume: (willEnable: boolean) => void;
   isBoopEnabled: () => boolean;
   toggleDebugging: () => void;
+  startPlaying: () => void;
+  nextStage: () => void;
 };
 
 export const useQBeatsStore = create<QBeatsState>((set, get) => ({
@@ -72,6 +79,9 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
   songSampling: 2,
   boop: null,
   isDebugging: window.location.hash === "#debug",
+  isPlaying: false,
+  stage: 1,
+  hasWon: false,
   indentScore: () => set((state) => ({ score: state.score + 1 })),
   resetScore: () => set({ score: 0 }),
   clockStart: async () => {
@@ -123,4 +133,16 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
     return boop.volume.value === BOOP_VOLUME;
   },
   toggleDebugging: () => set((state) => ({ isDebugging: !state.isDebugging })),
+  startPlaying: () =>
+    set((state) => {
+      state.resetScore();
+      state.clockStart();
+      return { isPlaying: true };
+    }),
+  nextStage: () =>
+    set((state) => ({
+      isPlaying: false,
+      stage: state.stage < MAX_STAGE ? state.stage + 1 : MAX_STAGE,
+      hasWon: state.stage === MAX_STAGE,
+    })),
 }));

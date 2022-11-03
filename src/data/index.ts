@@ -77,4 +77,9 @@ const HAPPY_BIRTHDAY: SongType = [
   [{note: 4, duration: 4}], [], [], [], [], [],
 ];
 
+// prettier-ignore
+const ONE_NOTE: SongType = [
+  [], [], [{note: 1, duration: 1}], [], []
+];
+
 export const SONG = HAPPY_BIRTHDAY;

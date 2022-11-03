@@ -1,0 +1,75 @@
+.instructions {
+  --back-color: #fff;
+  --front-color: #000;
+  background-color: var(--back-color);
+  color: var(--front-color);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.instructions.is-playing {
+  display: none;
+}
+
+.instructions.stage-1 {
+  --back-color: dodgerblue;
+  --front-color: #37011d;
+}
+
+.instructions.stage-2 {
+  --back-color: hotpink;
+  --front-color: #460725;
+}
+
+.instructions.stage-3 {
+  --back-color: springgreen;
+  --front-color: #302833;
+}
+
+.instructions.stage-4 {
+  --back-color: skyblue;
+  --front-color: #102579;
+}
+
+.instructions.stage-5 {
+  --back-color: indigo;
+  --front-color: #ddec70;
+}
+
+.instructions.stage-6 {
+  --back-color: violet;
+  --front-color: #403b2a;
+}
+
+.instructions.stage-7 {
+  --back-color: yellow;
+  --front-color: #33217f;
+}
+
+.instructions.stage-8 {
+  --back-color: teal;
+  --front-color: #f9fee8;
+}
+
+.instructions.stage-9 {
+  --back-color: blueviolet;
+  --front-color: #baecf9;
+}
+
+.instructions h1, .instructions p {
+  text-align: center;
+}
+
+.instructions button {
+  border: 2px solid var(--front-color);
+  background-color: transparent;
+  color: var(--front-color);
+  padding: 10px 20px;
+}

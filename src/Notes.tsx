@@ -29,6 +29,8 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
   const clockGetTime = useQBeatsStore((state) => state.clockGetTime);
   const clockIsRunning = useQBeatsStore((state) => state.clockIsRunning);
   const clockIsPaused = useQBeatsStore((state) => state.clockIsPaused);
+  const nextStage = useQBeatsStore((state) => state.nextStage);
+  const stage = useQBeatsStore((state) => state.stage);
   const timedNotesQueueRef = useTimedNotesQueue(clockGetTime);
 
   useEffect(() => {
@@ -58,6 +60,7 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
     if (ref.current.position.z > song.length + 2) {
       ref.current.position.z = 0;
       clockStop();
+      nextStage();
       previousElapsedTimeRef.current = 0;
       notesRef.current.matched = new Set();
     } else {
@@ -101,7 +104,7 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
           line.map(({ note, duration }) => {
             return (
               <Note
-                key={`${i}-${note}`}
+                key={`${stage}-${i}-${note}`}
                 note={note}
                 color={color}
                 start={i}
