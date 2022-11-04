@@ -147,7 +147,8 @@ class TimedNotesQueue {
   }
 }
 
-export function useTimedNotesQueue(getTime: () => number) {
+export function useTimedNotesQueue() {
+  const getTime = useQBeatsStore((state) => state.clockGetTime);
   const timedNotesQueueRef = useRef(new TimedNotesQueue(getTime));
   useEffect(() => {
     const cleanupMidiListener = listenToMidi(

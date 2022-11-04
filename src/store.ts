@@ -63,6 +63,7 @@ type QBeatsState = {
   clockGetTime: () => number;
   clockIsRunning: () => boolean;
   clockIsPaused: () => boolean;
+  toggleClock: () => void;
   trigger: (note: NoteType) => void;
   release: (note: NoteType) => void;
   toggleBoopVolume: (willEnable: boolean) => void;
@@ -70,6 +71,7 @@ type QBeatsState = {
   toggleDebugging: () => void;
   startPlaying: () => void;
   nextStage: () => void;
+  endSong: () => void;
 };
 
 export const useQBeatsStore = create<QBeatsState>((set, get) => ({
@@ -116,6 +118,16 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
   clockIsPaused: () => {
     return Tone.Transport.state === "paused";
   },
+  toggleClock: () => {
+    if (get().clockIsRunning()) {
+      get().clockPause();
+    } else {
+      if (!get().clockIsPaused()) {
+        get().resetScore();
+      }
+      get().clockStart();
+    }
+  },
   trigger: (note: NoteType) => {
     fakePiano?.triggerAttack(toToneNote(note));
   },
@@ -133,16 +145,21 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
     return boop.volume.value === BOOP_VOLUME;
   },
   toggleDebugging: () => set((state) => ({ isDebugging: !state.isDebugging })),
-  startPlaying: () =>
+  startPlaying: () => {
+    get().resetScore();
+    get().clockStart();
     set((state) => {
-      state.resetScore();
-      state.clockStart();
       return { isPlaying: true };
-    }),
+    });
+  },
   nextStage: () =>
     set((state) => ({
       isPlaying: false,
       stage: state.stage < MAX_STAGE ? state.stage + 1 : MAX_STAGE,
       hasWon: state.stage === MAX_STAGE,
     })),
+  endSong: () => {
+    get().clockStop();
+    get().nextStage();
+  },
 }));

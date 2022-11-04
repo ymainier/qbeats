@@ -21,36 +21,24 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
     position: 0,
     matched: new Set<`${number}-${NoteType}`>(),
   });
-  const indentScore = useQBeatsStore((state) => state.indentScore);
-  const resetScore = useQBeatsStore((state) => state.resetScore);
-  const clockStart = useQBeatsStore((state) => state.clockStart);
-  const clockPause = useQBeatsStore((state) => state.clockPause);
-  const clockStop = useQBeatsStore((state) => state.clockStop);
   const clockGetTime = useQBeatsStore((state) => state.clockGetTime);
-  const clockIsRunning = useQBeatsStore((state) => state.clockIsRunning);
-  const clockIsPaused = useQBeatsStore((state) => state.clockIsPaused);
-  const nextStage = useQBeatsStore((state) => state.nextStage);
+  const indentScore = useQBeatsStore((state) => state.indentScore);
+  const endSong = useQBeatsStore((state) => state.endSong);
+  const toggleClock = useQBeatsStore((state) => state.toggleClock);
   const stage = useQBeatsStore((state) => state.stage);
-  const timedNotesQueueRef = useTimedNotesQueue(clockGetTime);
+  const timedNotesQueueRef = useTimedNotesQueue();
 
   useEffect(() => {
     const onKeyDown = async ({ code }: KeyboardEvent) => {
       if (code === "Space") {
-        if (clockIsRunning()) {
-          clockPause();
-        } else {
-          if (!clockIsPaused()) {
-            resetScore();
-          }
-          await clockStart();
-        }
+        toggleClock();
       }
     };
     window.addEventListener("keydown", onKeyDown, false);
     return () => {
       window.removeEventListener("keydown", onKeyDown, false);
     };
-  }, [resetScore, clockStart, clockPause, clockIsRunning, clockIsPaused]);
+  }, [toggleClock]);
 
   useFrame(() => {
     const elapsedTime = clockGetTime();
@@ -59,8 +47,7 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
     if (!ref.current) return;
     if (ref.current.position.z > song.length + 2) {
       ref.current.position.z = 0;
-      clockStop();
-      nextStage();
+      endSong();
       previousElapsedTimeRef.current = 0;
       notesRef.current.matched = new Set();
     } else {
