@@ -3,7 +3,14 @@ import "./Instructions.css";
 import { useQBeatsStore } from "./store";
 
 const CONTENT = [
-  { title: "Stage 1: 🎂", lines: ["one"] },
+  {
+    title: "Stage 1: 👋",
+    lines: [
+      "Hey, mon lapin! You asked for a game for your 9th birthday. So, I thought about this rhythm game here.",
+      "You can play by plugging your piano and using the notes between the middle C and the C one octave higher. You can also use the computer keyboard. On our laptop Middle C is the Q key, D is the S key, and so on.",
+      "Let's practice with only the white notes: C D E F G A B C B A G F E D C. Nice and easy. Remember that rhythm is essential: use the metronome sound or look at the bar.",
+    ],
+  },
   { title: "Stage 2: ❤️", lines: ["two"] },
   { title: "Stage 3: 🎁", lines: ["three"] },
   { title: "Stage 4: ⭐️", lines: ["four"] },

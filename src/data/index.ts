@@ -64,6 +64,15 @@ export function minMax(song: SongType): [NoteType, NoteType] {
   ];
 }
 
+const EVERY_WHITE_NOTES: SongType = [
+  [], [], [], [],
+  [{note: 1, duration: 1}], [{note: 2, duration: 1}], [{note: 3, duration: 1}], [{note: 4, duration: 1}],
+  [{note: 5, duration: 1}], [{note: 6, duration: 1}], [{note: 7, duration: 1}], [{note: 8, duration: 1}],
+  [{note: 7, duration: 1}], [{note: 6, duration: 1}], [{note: 5, duration: 1}], [{note: 4, duration: 1}],
+  [{note: 3, duration: 1}], [{note: 2, duration: 1}], [{note: 1, duration: 1}], [],
+  [], [], [], [],
+];
+
 // prettier-ignore
 const HAPPY_BIRTHDAY: SongType = [
   [], [], [], [], [{note: 1, duration: 1}], [{note: 1, duration: 1}],
@@ -82,4 +91,4 @@ const ONE_NOTE: SongType = [
   [], [], [{note: 1, duration: 1}], [], []
 ];
 
-export const SONG = HAPPY_BIRTHDAY;
+export const SONGS: Array<SongType> = [EVERY_WHITE_NOTES, ONE_NOTE, HAPPY_BIRTHDAY];

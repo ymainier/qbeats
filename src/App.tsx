@@ -5,7 +5,6 @@ import { Leva } from "leva";
 import { Scene } from "./Scene";
 import { Hud } from "./Hud";
 import { useQBeatsStore } from "./store";
-import { SONG } from "./data";
 import { Instructions } from "./Instructions";
  
 const App: FC = () => {
@@ -26,7 +25,7 @@ const App: FC = () => {
   return (
     <>
       <Canvas>
-        <Scene song={SONG} />
+        <Scene />
       </Canvas>
       <Hud />
       <Instructions />

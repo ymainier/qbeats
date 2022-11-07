@@ -1,7 +1,7 @@
 import create from "zustand";
 import * as Tone from "tone";
-import { NOTE_TO_TONE } from "./data";
-import type { NoteType } from "./data";
+import { NOTE_TO_TONE, SONGS } from "./data";
+import type { NoteType, SongType } from "./data";
 
 const MAX_STAGE = 9;
 
@@ -12,6 +12,11 @@ function toToneNote(note: NoteType): string {
 let fakePiano: Tone.Sampler | null = null;
 
 const BOOP_VOLUME = -20;
+const SUCCESS_THRESHOLD = 2 / 3;
+
+function countNotes(song: SongType): number {
+  return song.flat(2).length;
+}
 
 function makeBoop(): Tone.Synth {
   return new Tone.Synth({
@@ -46,6 +51,7 @@ function makeFakePiano(): Tone.Sampler {
 }
 
 type QBeatsState = {
+  song: SongType;
   score: number;
   isToneActivated: boolean;
   speed: number;
@@ -75,6 +81,7 @@ type QBeatsState = {
 };
 
 export const useQBeatsStore = create<QBeatsState>((set, get) => ({
+  song: SONGS[0],
   score: 0,
   isToneActivated: false,
   speed: 120,
@@ -153,13 +160,23 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
     });
   },
   nextStage: () =>
-    set((state) => ({
-      isPlaying: false,
-      stage: state.stage < MAX_STAGE ? state.stage + 1 : MAX_STAGE,
-      hasWon: state.stage === MAX_STAGE,
-    })),
+    set((state) => {
+      const nextStage = state.stage < MAX_STAGE ? state.stage + 1 : MAX_STAGE;
+      return {
+        isPlaying: false,
+        stage: nextStage,
+        hasWon: state.stage === MAX_STAGE,
+        song: SONGS[nextStage - 1] ?? SONGS[SONGS.length - 1],
+      };
+    }),
   endSong: () => {
     get().clockStop();
-    get().nextStage();
+    if (get().score / countNotes(get().song) >= SUCCESS_THRESHOLD) {
+      get().nextStage();
+    } else {
+      set(() => ({
+        isPlaying: false,
+      }));
+    }
   },
 }));

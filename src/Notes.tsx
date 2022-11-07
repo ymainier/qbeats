@@ -4,15 +4,17 @@ import { Group, Color } from "three";
 import { useFrame } from "@react-three/fiber";
 import { Instances, Instance, Box } from "@react-three/drei";
 
-import { minMax } from "./data";
-import type { SongType, NoteType } from "./data";
+import { ALL_NOTES } from "./data";
+import type { NoteType } from "./data";
 import { useTimedNotesQueue } from "./hooks";
 import { useQBeatsStore } from "./store";
 
-type NotesProps = { song: SongType; color: string; objectSize: number };
-export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
+type NotesProps = { color: string; objectSize: number };
+export const Notes: FC<NotesProps> = ({ color, objectSize }) => {
   const threshold = 0.25;
-  const [low, high] = minMax(song);
+  const song = useQBeatsStore((state) => state.song);
+  const low = Math.min(...ALL_NOTES);
+  const high = Math.max(...ALL_NOTES);
   const half = (high - low) / 2;
   const amplitude = low + half;
   const ref = useRef<Group>(null);
@@ -45,7 +47,7 @@ export const Notes: FC<NotesProps> = ({ song, color, objectSize }) => {
     const delta = elapsedTime - previousElapsedTimeRef.current;
     previousElapsedTimeRef.current = elapsedTime;
     if (!ref.current) return;
-    if (ref.current.position.z > song.length + 2) {
+    if (ref.current.position.z > song.length) {
       ref.current.position.z = 0;
       endSong();
       previousElapsedTimeRef.current = 0;
@@ -112,7 +114,7 @@ type NoteProps = {
   note: NoteType;
   start: number;
   duration: number;
-  amplitude: number; // low - half
+  amplitude: number;
   color: string;
   notesRef: React.MutableRefObject<{
     position: number;

@@ -4,13 +4,14 @@ import { useThree } from "@react-three/fiber";
 import { Stats } from "@react-three/drei";
 import { useControls } from "leva";
 
-import { COLORS, OBJECT_SIZE, SongType, minMax } from "./data";
+import { ALL_NOTES, COLORS, OBJECT_SIZE } from "./data";
 import { Notes } from "./Notes";
 import { KeyboardLineWithPlayedNotes } from "./KeyboardLineWithPlayedNotes";
 import { useQBeatsStore } from "./store";
 
-export const Scene: FC<{ song: SongType }> = ({ song }) => {
-  const [low, high] = minMax(song);
+export const Scene: FC = () => {
+  const low = Math.min(...ALL_NOTES);
+  const high = Math.max(...ALL_NOTES);
   const gridSize = high - low + 1;
   const camera = useThree((state) => state.camera);
   const viewport = useThree((state) => state.viewport);
@@ -18,6 +19,7 @@ export const Scene: FC<{ song: SongType }> = ({ song }) => {
   const toggleBoopVolume = useQBeatsStore((state) => state.toggleBoopVolume);
   const isBoopEnabled = useQBeatsStore((state) => state.isBoopEnabled);
   const isDebugging = useQBeatsStore((state) => state.isDebugging);
+  const stage = useQBeatsStore((state) => state.stage);
 
   useControls("position", {
     x: { value: 0, step: 0.1, onChange: (x) => (camera.position.x = x) },
@@ -43,7 +45,7 @@ export const Scene: FC<{ song: SongType }> = ({ song }) => {
       {isDebugging && <Stats />}
       <ambientLight />
       <directionalLight position={[-150, 150, -150]} intensity={0.55} />
-      <Notes song={song} color={COLORS[0]} objectSize={OBJECT_SIZE} />
+      <Notes key={stage} color={COLORS[0]} objectSize={OBJECT_SIZE} />
       <KeyboardLineWithPlayedNotes
         gridSize={gridSize}
         objectSize={OBJECT_SIZE}
