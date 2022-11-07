@@ -35,7 +35,7 @@ export const Instructions: FC = () => {
   const hasWon = useQBeatsStore((state) => state.hasWon);
   const stage = useQBeatsStore((state) => state.stage);
   const isPlaying = useQBeatsStore((state) => state.isPlaying);
-  const startPlaying = useQBeatsStore((state) => state.startPlaying);
+  const toggleClock = useQBeatsStore((state) => state.toggleClock);
   const { title, lines } =
     hasWon || stage < 1 || stage > CONTENT.length ? WON : CONTENT[stage - 1];
 
@@ -51,7 +51,7 @@ export const Instructions: FC = () => {
       ))}
       {!hasWon && (
         <p>
-          <button onClick={startPlaying}>Play !</button>
+          <button onClick={toggleClock}>Play !</button>
         </p>
       )}
     </section>

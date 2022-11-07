@@ -75,7 +75,6 @@ type QBeatsState = {
   toggleBoopVolume: (willEnable: boolean) => void;
   isBoopEnabled: () => boolean;
   toggleDebugging: () => void;
-  startPlaying: () => void;
   nextStage: () => void;
   endSong: () => void;
 };
@@ -133,6 +132,7 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
         get().resetScore();
       }
       get().clockStart();
+      set({ isPlaying: true });
     }
   },
   trigger: (note: NoteType) => {
@@ -152,13 +152,6 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
     return boop.volume.value === BOOP_VOLUME;
   },
   toggleDebugging: () => set((state) => ({ isDebugging: !state.isDebugging })),
-  startPlaying: () => {
-    get().resetScore();
-    get().clockStart();
-    set((state) => {
-      return { isPlaying: true };
-    });
-  },
   nextStage: () =>
     set((state) => {
       const nextStage = state.stage < MAX_STAGE ? state.stage + 1 : MAX_STAGE;
@@ -174,9 +167,7 @@ export const useQBeatsStore = create<QBeatsState>((set, get) => ({
     if (get().score / countNotes(get().song) >= SUCCESS_THRESHOLD) {
       get().nextStage();
     } else {
-      set(() => ({
-        isPlaying: false,
-      }));
+      set({ isPlaying: false });
     }
   },
 }));
