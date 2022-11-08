@@ -45,15 +45,17 @@ export const Instructions: FC = () => {
         isPlaying ? "is-playing" : "is-not-playing"
       }`}
     >
-      <h1>{title}</h1>
-      {lines.map((line, i) => (
-        <p key={`${stage}-${i}`}>{line}</p>
-      ))}
-      {!hasWon && (
-        <p>
-          <button onClick={toggleClock}>Play !</button>
-        </p>
-      )}
+      <div className="instructions-container">
+        <h1>{title}</h1>
+        {lines.map((line, i) => (
+          <p key={`${stage}-${i}`}>{line}</p>
+        ))}
+        {!hasWon && (
+          <p className="button-container">
+            <button onClick={toggleClock}>Play !</button>
+          </p>
+        )}
+      </div>
     </section>
   );
 };

@@ -63,7 +63,12 @@
   --front-color: #baecf9;
 }
 
-.instructions h1, .instructions p {
+.instructions-container {
+  max-width: 30rem;
+  margin: 0 auto;
+}
+
+.instructions h1, .instructions .button-container {
   text-align: center;
 }
 
