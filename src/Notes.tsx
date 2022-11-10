@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import type { FC } from "react";
 import { Group, Color } from "three";
 import { useFrame } from "@react-three/fiber";
-import { Instances, Instance, Box } from "@react-three/drei";
+import { Box, Instances, Instance, Segments, Segment } from "@react-three/drei";
 
 import { ALL_NOTES } from "./data";
 import type { NoteType } from "./data";
@@ -83,9 +83,20 @@ export const Notes: FC<NotesProps> = ({ color, objectSize }) => {
   return (
     <group ref={ref}>
       <Box
-        args={[high - low + objectSize, 0.01, song.length]}
-        position={[0, -0.05, -song.length / 2]}
-      />
+        args={[1000, 0.01, 1000]}
+        position={[0, -0.05, -100 / 2]}
+      >
+        <meshBasicMaterial color="#eee" />
+      </Box>
+      <Segments limit={100} lineWidth={1}>
+        {Array.from({ length: high - low + 2 }).map((_, i) => (
+          <Segment
+            start={[i - half - objectSize / 2, -0.04, 0]}
+            end={[i - half - objectSize / 2, -0.04, -song.length]}
+            color="#bbb"
+          />
+        ))}
+      </Segments>
       <Instances limit={song.flat().length}>
         <boxGeometry args={[objectSize, 0.1, objectSize]} />
         <meshLambertMaterial />
