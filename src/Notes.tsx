@@ -4,7 +4,7 @@ import { Group, Color } from "three";
 import { useFrame } from "@react-three/fiber";
 import { Box, Instances, Instance, Segments, Segment } from "@react-three/drei";
 
-import { ALL_NOTES } from "./data";
+import { ALL_NOTES, COLORS } from "./data";
 import type { NoteType } from "./data";
 import { useTimedNotesQueue } from "./hooks";
 import { useQBeatsStore } from "./store";
@@ -86,7 +86,7 @@ export const Notes: FC<NotesProps> = ({ color, objectSize }) => {
         args={[1000, 0.01, 1000]}
         position={[0, -0.05, -100 / 2]}
       >
-        <meshBasicMaterial color="#eee" />
+        <meshBasicMaterial color="#9bff8f" />
       </Box>
       <Segments lineWidth={1}>
         {Array.from({ length: high - low + 2 }).map((_, i) => (
@@ -94,7 +94,7 @@ export const Notes: FC<NotesProps> = ({ color, objectSize }) => {
             key={`segment-${i}`}
             start={[i - half - objectSize / 2, -0.04, 0]}
             end={[i - half - objectSize / 2, -0.04, -song.length]}
-            color="#bbb"
+            color="#2d694e"
           />
         ))}
       </Segments>
@@ -148,7 +148,7 @@ const Note: FC<NoteProps> = ({
   useFrame(() => {
     if (!ref.current) return;
     if (notesRef.current.position === 0) {
-      ref.current.color = new Color(color);
+      ref.current.color = new Color(COLORS[Math.floor(Math.random() * COLORS.length)]);
     } else if (notesRef.current.matched.has(`${start}-${note}`)) {
       ref.current.color = new Color("green");
     } else if (notesRef.current.position > start + duration + threshold) {

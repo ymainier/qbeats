@@ -9,8 +9,28 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: 'Roboto Slab', serif;
+  font-style: italic;
+  line-height: 1.5rem;
 }
 
 body {
   background: #f0f0f0;
+}
+
+h1 {
+  font-family: 'Bangers', cursive;
+  font-style: normal;
+  font-size: 4rem;
+  line-height: 6rem;
+  margin: 0 0 1rem;
+}
+
+button {
+  font-family: 'Roboto Slab', serif;
+  font-style: italic;
+}
+
+p {
+  margin: 0 0 1rem;
 }
