@@ -88,9 +88,10 @@ export const Notes: FC<NotesProps> = ({ color, objectSize }) => {
       >
         <meshBasicMaterial color="#eee" />
       </Box>
-      <Segments limit={100} lineWidth={1}>
+      <Segments lineWidth={1}>
         {Array.from({ length: high - low + 2 }).map((_, i) => (
           <Segment
+            key={`segment-${i}`}
             start={[i - half - objectSize / 2, -0.04, 0]}
             end={[i - half - objectSize / 2, -0.04, -song.length]}
             color="#bbb"
@@ -101,10 +102,10 @@ export const Notes: FC<NotesProps> = ({ color, objectSize }) => {
         <boxGeometry args={[objectSize, 0.1, objectSize]} />
         <meshLambertMaterial />
         {song.flatMap((line, i) =>
-          line.map(({ note, duration }) => {
+          line.map(({ note, duration }, j) => {
             return (
               <Note
-                key={`${stage}-${i}-${note}`}
+                key={`note-${stage}-${i}-${j}-${note}`}
                 note={note}
                 color={color}
                 start={i}
