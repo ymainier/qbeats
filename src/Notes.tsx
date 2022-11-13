@@ -22,7 +22,7 @@ const COLORS = shuffle(NOTE_COLORS);
 
 type NotesProps = { objectSize: number };
 export const Notes: FC<NotesProps> = ({ objectSize }) => {
-  const threshold = 0.25;
+  const threshold = 0.35;
   const song = useQBeatsStore((state) => state.song);
   const low = Math.min(...ALL_NOTES);
   const high = Math.max(...ALL_NOTES);

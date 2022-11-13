@@ -15,7 +15,6 @@ function listenToMidi(
 ) {
   const noteOnHandler = ({ note: _note }: NoteMessageEvent) => {
     const note = midiNoteToNote(_note);
-    console.log(note)
     if (note) onPress(note);
   };
   const noteOffHandler = ({ note: _note }: NoteMessageEvent) => {
