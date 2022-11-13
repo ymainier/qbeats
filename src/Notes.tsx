@@ -4,13 +4,24 @@ import { Group, Color } from "three";
 import { useFrame } from "@react-three/fiber";
 import { Box, Instances, Instance, Segments, Segment } from "@react-three/drei";
 
-import { ALL_NOTES, COLORS } from "./data";
+import {
+  ALL_NOTES,
+  NOTE_COLORS,
+  FAILURE_COLOR,
+  SUCCESS_COLOR,
+  GROUND_COLOR,
+  SEGMENT_COLOR,
+  SKY_COLOR,
+  shuffle,
+} from "./data";
 import type { NoteType } from "./data";
 import { useTimedNotesQueue } from "./hooks";
 import { useQBeatsStore } from "./store";
 
-type NotesProps = { color: string; objectSize: number };
-export const Notes: FC<NotesProps> = ({ color, objectSize }) => {
+const COLORS = shuffle(NOTE_COLORS);
+
+type NotesProps = { objectSize: number };
+export const Notes: FC<NotesProps> = ({ objectSize }) => {
   const threshold = 0.25;
   const song = useQBeatsStore((state) => state.song);
   const low = Math.min(...ALL_NOTES);
@@ -79,14 +90,15 @@ export const Notes: FC<NotesProps> = ({ color, objectSize }) => {
       );
     }
   });
+  let index = 0;
 
   return (
     <group ref={ref}>
-      <Box
-        args={[1000, 0.01, 1000]}
-        position={[0, -0.05, -100 / 2]}
-      >
-        <meshBasicMaterial color="#9bff8f" />
+      <Box args={[10000, 0.01, 10000]} position={[0, -0.05, -1000 / 2]}>
+        <meshLambertMaterial color={GROUND_COLOR} />
+      </Box>
+      <Box args={[10000, 10000, 0.01]} position={[0, 0, -1000 / 2]}>
+        <meshLambertMaterial color={SKY_COLOR} />
       </Box>
       <Segments lineWidth={1}>
         {Array.from({ length: high - low + 2 }).map((_, i) => (
@@ -94,7 +106,7 @@ export const Notes: FC<NotesProps> = ({ color, objectSize }) => {
             key={`segment-${i}`}
             start={[i - half - objectSize / 2, -0.04, 0]}
             end={[i - half - objectSize / 2, -0.04, -song.length]}
-            color="#2d694e"
+            color={SEGMENT_COLOR}
           />
         ))}
       </Segments>
@@ -107,12 +119,12 @@ export const Notes: FC<NotesProps> = ({ color, objectSize }) => {
               <Note
                 key={`note-${stage}-${i}-${j}-${note}`}
                 note={note}
-                color={color}
                 start={i}
                 duration={duration}
                 amplitude={amplitude}
                 notesRef={notesRef}
                 threshold={threshold}
+                index={index++}
               />
             );
           })
@@ -127,12 +139,12 @@ type NoteProps = {
   start: number;
   duration: number;
   amplitude: number;
-  color: string;
   notesRef: React.MutableRefObject<{
     position: number;
     matched: Set<`${number}-${NoteType}`>;
   }>;
   threshold: number;
+  index: number;
 };
 
 const Note: FC<NoteProps> = ({
@@ -140,19 +152,20 @@ const Note: FC<NoteProps> = ({
   start,
   duration,
   amplitude,
-  color,
   notesRef,
   threshold,
+  index,
 }) => {
   const ref = useRef<{ color: Color }>();
   useFrame(() => {
     if (!ref.current) return;
     if (notesRef.current.position === 0) {
-      ref.current.color = new Color(COLORS[Math.floor(Math.random() * COLORS.length)]);
+      const randomColor = COLORS[index % COLORS.length];
+      ref.current.color = new Color(randomColor);
     } else if (notesRef.current.matched.has(`${start}-${note}`)) {
-      ref.current.color = new Color("green");
+      ref.current.color = new Color(SUCCESS_COLOR);
     } else if (notesRef.current.position > start + duration + threshold) {
-      ref.current.color = new Color("red");
+      ref.current.color = new Color(FAILURE_COLOR);
     }
   });
   return (
@@ -160,7 +173,6 @@ const Note: FC<NoteProps> = ({
       ref={ref}
       position={[note - amplitude, 0, -start - duration / 2]}
       scale={[1, 1, duration - 0.1]}
-      color={color}
     />
   );
 };

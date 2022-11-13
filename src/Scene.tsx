@@ -4,7 +4,7 @@ import { useThree } from "@react-three/fiber";
 import { Stats } from "@react-three/drei";
 import { useControls } from "leva";
 
-import { ALL_NOTES, COLORS, OBJECT_SIZE } from "./data";
+import { ALL_NOTES, OBJECT_SIZE } from "./data";
 import { Notes } from "./Notes";
 import { KeyboardLineWithPlayedNotes } from "./KeyboardLineWithPlayedNotes";
 import { useQBeatsStore } from "./store";
@@ -43,15 +43,13 @@ export const Scene: FC = () => {
   return (
     <group ref={groupRef}>
       {isDebugging && <Stats />}
-      <ambientLight />
-      <directionalLight position={[-150, 150, -150]} intensity={0.55} />
-      <Notes key={stage} color={COLORS[0]} objectSize={OBJECT_SIZE} />
+      <ambientLight intensity={0.3} />
+      <pointLight intensity={0.8} position={[-50, 50, -50]} />
+      <Notes key={stage} objectSize={OBJECT_SIZE} />
       <KeyboardLineWithPlayedNotes
         gridSize={gridSize}
         objectSize={OBJECT_SIZE}
-        gridColor={COLORS[1]}
         gridThickness={OBJECT_SIZE * 0.101}
-        playedNotesColor={COLORS[2]}
         playedNotesThickness={OBJECT_SIZE * 0.102}
       />
     </group>

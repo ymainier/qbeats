@@ -4,3 +4,12 @@
   width: 100%;
   text-align: center;
 }
+
+.hud .score {
+  display: inline-block;
+  width: 200px;
+  height: 125px;
+  color: #fff;
+  background-color: #e4cd5a;
+  border-radius: 0 0 100px 100px;
+}

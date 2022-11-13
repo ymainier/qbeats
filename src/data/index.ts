@@ -1,8 +1,41 @@
-import colors from "nice-color-palettes";
-
 export const OBJECT_SIZE = 1;
 
-export const COLORS = colors[6];
+const ALL_COLORS = [
+  "#120a1a", "#2a2a41", "#404863", "#59607a", "#787d8b",
+  "#9da5ae", "#c8d6ac", "#feffe5", "#e4cd5a", "#d49733",
+  "#d68552", "#be5a1e", "#894835", "#602631", "#4b0c30",
+  "#81173f", "#cc1825", "#dc4926", "#f1934c", "#fad5af",
+  "#ed9d7c", "#d16363", "#b7ab76", "#b59857", "#926d3c",
+  "#8b5b37", "#ff82a0", "#ff26a8", "#422490", "#2749d0",
+  "#4477ff", "#4cc5e4", "#8bf5c6", "#85c448", "#439d40",
+  "#29694e",
+];
+
+export const GROUND_COLOR = "#439d40";
+export const SEGMENT_COLOR = "#29694e";
+export const SKY_COLOR = "#4cc5e4";
+export const SUCCESS_COLOR = "#85c448";
+export const FAILURE_COLOR = "#dc4926";
+export const NOTE_COLORS = ALL_COLORS.slice(8, 33);
+
+export function shuffle<T>(array: Array<T>): Array<T> {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex !== 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
 
 export const ALL_NOTES = [
   1, 1.5, 2, 2.5, 3, 4, 4.5, 5, 5.5, 6, 6.5, 7, 8,

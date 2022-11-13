@@ -19,48 +19,48 @@
 }
 
 .instructions.stage-1 {
-  --back-color: dodgerblue;
-  --front-color: #37011d;
+  --back-color: #2d694e;
+  --front-color: #fff;
 }
 
 .instructions.stage-2 {
-  --back-color: hotpink;
-  --front-color: #460725;
+  --back-color: #432a90;
+  --front-color: #fff;
 }
 
 .instructions.stage-3 {
-  --back-color: springgreen;
-  --front-color: #302833;
+  --back-color: #8c5b37;
+  --front-color: #fff;
 }
 
 .instructions.stage-4 {
-  --back-color: skyblue;
-  --front-color: #102579;
+  --back-color: #ce3b28;
+  --front-color: #fff;
 }
 
 .instructions.stage-5 {
-  --back-color: indigo;
-  --front-color: #ddec70;
+  --back-color: #2a2a41;
+  --front-color: #fff;
 }
 
 .instructions.stage-6 {
-  --back-color: violet;
-  --front-color: #403b2a;
+  --back-color: #2849d0;
+  --front-color: #fff;
 }
 
 .instructions.stage-7 {
-  --back-color: yellow;
-  --front-color: #33217f;
+  --back-color: #4b1430;
+  --front-color: #fff;
 }
 
 .instructions.stage-8 {
-  --back-color: teal;
-  --front-color: #f9fee8;
+  --back-color: #414863;
+  --front-color: #fff;
 }
 
 .instructions.stage-9 {
-  --back-color: blueviolet;
-  --front-color: #baecf9;
+  --back-color: #2d694e;
+  --front-color: #fff;
 }
 
 .instructions-container {
