@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { WebMidi } from "webmidi";
-import type { InputChannel } from "webmidi";
+import type { InputChannel, NoteMessageEvent } from "webmidi";
 import { KEYCODES_TO_NOTES, midiNoteToNote } from "../data";
 import type { NoteType } from "../data";
 import { useQBeatsStore } from "../store";
@@ -13,25 +13,29 @@ function listenToMidi(
   onPress: (note: NoteType) => void,
   onRelease: (note: NoteType) => void
 ) {
+  const noteOnHandler = ({ note: _note }: NoteMessageEvent) => {
+    const note = midiNoteToNote(_note);
+    console.log(note)
+    if (note) onPress(note);
+  };
+  const noteOffHandler = ({ note: _note }: NoteMessageEvent) => {
+    const note = midiNoteToNote(_note);
+    if (note) onRelease(note);
+  };
   WebMidi.enable()
     .then(() => {
       if (WebMidi.inputs.length > 0 && WebMidi.inputs[0].channels.length > 1) {
         inputChannelRef.current = WebMidi.inputs[0].channels[1];
-        inputChannelRef.current.addListener("noteon", ({ note: _note }) => {
-          const note = midiNoteToNote(_note);
-          if (note) onPress(note);
-        });
-        inputChannelRef.current.addListener("noteoff", ({ note: _note }) => {
-          const note = midiNoteToNote(_note);
-          if (note) onRelease(note);
-        });
+        inputChannelRef.current.addListener("noteon", noteOnHandler);
+        inputChannelRef.current.addListener("noteoff", noteOffHandler);
       }
     })
     .catch((err) => console.error(err));
 
   return () => {
     if (inputChannelRef.current) {
-      inputChannelRef.current.removeListener();
+      inputChannelRef.current.removeListener("noteon", noteOnHandler);
+      inputChannelRef.current.removeListener("noteoff", noteOffHandler);
     }
   };
 }
