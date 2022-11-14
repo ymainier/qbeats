@@ -12,7 +12,7 @@ function toToneNote(note: NoteType): string {
 let fakePiano: Tone.Sampler | null = null;
 
 const BOOP_VOLUME = -20;
-const SUCCESS_THRESHOLD = 2 / 3;
+const SUCCESS_THRESHOLD = 1 / 3;
 
 function countNotes(song: SongType): number {
   return song.flat(2).length;
