@@ -1,13 +1,15 @@
 {
-  "name": "qbeats-react",
+  "name": "qbeats",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://ymainier.github.io/qbeats",
   "dependencies": {
     "@react-three/drei": "^9.40.0",
     "@react-three/fiber": "^8.9.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
+    "gh-pages": "^4.0.0",
     "leva": "^0.9.34",
     "nice-color-palettes": "^3.0.0",
     "react": "^18.2.0",
@@ -30,6 +32,8 @@
     "prettier": "^2.7.1"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
