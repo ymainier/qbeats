@@ -11,24 +11,24 @@ const CONTENT = [
       "Let's practice with only the white notes: C D E F G A B C B A G F E D C. Nice and easy. Remember that rhythm is essential: use the metronome sound or look at the bar.",
     ],
   },
-  { title: "Stage 2: ❤️", lines: ["two"] },
-  { title: "Stage 3: 🎁", lines: ["three"] },
-  { title: "Stage 4: ⭐️", lines: ["four"] },
-  { title: "Stage 5: 🌈", lines: ["five"] },
-  { title: "Stage 6: ☀️", lines: ["six"] },
-  { title: "Stage 7: 🎡", lines: ["seven"] },
-  { title: "Stage 8: 🎇", lines: ["eight"] },
+  { title: "Stage 2: 👶", lines: ["As you quickly as you went from walking to running, let's do sharps! You'll do C# D# F# G# A# G# F# D# C#. If you use the laptop keyboard, the keys are Z E T Y and U."] },
+  { title: "Stage 3: 🧸", lines: ["And now with the fun part: songs!", "The little girl in this first song must like her lamb as much as you love you teddy."] },
+  { title: "Stage 4: ⭐️", lines: ["Ever since you were born, you've been my little star. Shine bright my love!"] },
+  { title: "Stage 5: 🔔", lines: ["One of your favorite moment of the year, and one of my favorite moment too since you're in my life 🎅"] },
+  { title: "Stage 6: 🌈", lines: ["Life with you is as beautiful and sweet as this song. It is Garota de Ipanema: The Girl from Ipanema."] },
+  { title: "Stage 7: 🦜", lines: ["You already know how to play this one! I can't believe how fast you learn things. It is the melody from Cockatoo."] },
+  { title: "Stage 8: 🎇", lines: ["That song celebrate joy, and this is what you are to me: happiness"] },
   {
-    title: "Stage 9: Happy Birthday 🎂🎁🎉",
+    title: "Stage 9: 🎂",
     lines: [
-      "How times fly my love ❤️ I'm so proud of you, don't ever change mon lapin 🐰",
+      "How times fly my love ❤️ I'm so proud of you, don't ever change mon lapin 🐰. HBD",
     ],
   },
 ];
 
 const WON = {
-  title: "Happy Birthday to You",
-  lines: ["Happy Birthday to You", "Happy Birthday to You mon lapin"],
+  title: "🎂🎁🎉",
+  lines: ["Happy Birthday to You", "Happy Birthday to You", "Happy Birthday to You mon petit lapin ❤️"],
 };
 
 export const Instructions: FC = () => {
