@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/qbeats/static/css/main.08d7d78f.css",
+    "main.js": "/qbeats/static/js/main.3f271d44.js",
+    "static/js/787.9f805af8.chunk.js": "/qbeats/static/js/787.9f805af8.chunk.js",
+    "index.html": "/qbeats/index.html",
+    "main.08d7d78f.css.map": "/qbeats/static/css/main.08d7d78f.css.map",
+    "main.3f271d44.js.map": "/qbeats/static/js/main.3f271d44.js.map",
+    "787.9f805af8.chunk.js.map": "/qbeats/static/js/787.9f805af8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.08d7d78f.css",
+    "static/js/main.3f271d44.js"
+  ]
+}
