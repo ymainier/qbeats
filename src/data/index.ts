@@ -97,7 +97,8 @@ export function minMax(song: SongType): [NoteType, NoteType] {
   ];
 }
 
-const EVERY_WHITE_NOTES: SongType = [
+// prettier-ignore
+const EVERY_WHITE_KEYS: SongType = [
   [], [], [], [],
   [{note: 1, duration: 2}], [], [{note: 2, duration: 2}], [], 
   [{note: 3, duration: 2}], [], [{note: 4, duration: 2}], [],
@@ -107,6 +108,17 @@ const EVERY_WHITE_NOTES: SongType = [
   [{note: 5, duration: 2}], [], [{note: 4, duration: 2}], [],
   [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [], 
   [{note: 1, duration: 2}],
+  [], [], [], [],
+];
+
+// prettier-ignore
+const EVERY_BLACK_KEYS: SongType = [
+  [], [], [], [],
+  [{note: 1.5, duration: 2}], [], [{note: 2.5, duration: 2}], [], 
+  [{note: 4.5, duration: 2}], [], [{note: 5.5, duration: 2}], [],
+  [{note: 6.5, duration: 2}], [], [{note: 5.5, duration: 2}], [],
+  [{note: 4.5, duration: 2}], [], [{note: 2.5, duration: 2}], [],
+  [{note: 1.5, duration: 2}], [],
   [], [], [], [],
 ];
 
@@ -124,8 +136,111 @@ const HAPPY_BIRTHDAY: SongType = [
 ];
 
 // prettier-ignore
-const ONE_NOTE: SongType = [
-  [], [], [{note: 1, duration: 1}], [], []
+const ODE_TO_JOY: SongType = [
+  [], [], [], [],
+  [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 5, duration: 2}], [],
+  [{note: 5, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [],
+  [{note: 1, duration: 2}], [], [{note: 1, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 3, duration: 2}], [],
+  [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 2, duration: 4}], [], [], [],
+  [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 5, duration: 2}], [],
+  [{note: 5, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [],
+  [{note: 1, duration: 2}], [], [{note: 1, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 3, duration: 2}], [],
+  [{note: 2, duration: 2}], [], [{note: 1, duration: 2}], [], [{note: 1, duration: 4}], [], [], [],
+  [{note: 2, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 1, duration: 2}], [],
+  [{note: 2, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 1, duration: 2}], [],
+  [{note: 2, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [],
+  [{note: 1, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 5, duration: 4}], [], [], [],
+  [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 5, duration: 2}], [],
+  [{note: 5, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [],
+  [{note: 1, duration: 2}], [], [{note: 1, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 3, duration: 2}], [],
+  [{note: 2, duration: 2}], [], [{note: 1, duration: 2}], [], [{note: 1, duration: 4}], [], [], [],
+  [], [], [], [],
 ];
 
-export const SONGS: Array<SongType> = [EVERY_WHITE_NOTES, ONE_NOTE, HAPPY_BIRTHDAY];
+// prettier-ignore
+const JINGLE_BELLS: SongType = [
+  [], [], [], [],
+  [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 4}], [], [], [],
+  [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 4}], [], [], [],
+  [{note: 3, duration: 2}], [], [{note: 5, duration: 2}], [], [{note: 1, duration: 2}], [], [{note: 2, duration: 2}], [],
+  [{note: 3, duration: 8}], [], [], [], [], [], [], [],
+  [{note: 4, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 4, duration: 2}], [],
+  [{note: 4, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [],
+  [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 3, duration: 2}], [],
+  [{note: 2, duration: 4}], [], [], [], [{note: 5, duration: 4}], [], [], [],
+  [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 4}], [], [], [],
+  [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 4}], [], [], [],
+  [{note: 3, duration: 2}], [], [{note: 5, duration: 2}], [], [{note: 1, duration: 2}], [], [{note: 2, duration: 2}], [],
+  [{note: 3, duration: 8}], [], [], [], [], [], [], [],
+  [{note: 4, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 4, duration: 2}], [],
+  [{note: 4, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [],
+  [{note: 5, duration: 2}], [], [{note: 5, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 2, duration: 2}], [],
+  [{note: 1, duration: 8}], [], [], [], [], [], [], [],
+  [], [], [], [],
+];
+
+// prettier-ignore
+const GIRL_FROM_IPANEMA: SongType = [
+  [], [], [], [],
+  [{note: 5, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [],
+  [{note: 5, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 1}], [{note: 3, duration: 1}], [{note: 2, duration: 2}], [],
+  [{note: 5, duration: 1}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [],
+  [{note: 5, duration: 1}], [{note: 5, duration: 1}], [{note: 3, duration: 2}], [], [{note: 3, duration: 1}], [{note: 3, duration: 1}], [{note: 2, duration: 2}], [],
+  [{note: 4, duration: 1}], [], [{note: 2, duration: 2}], [], [{note: 2, duration: 1}], [{note: 2, duration: 1}], [{note: 1, duration: 2}], [],
+  [{note: 3, duration: 1}], [], [{note: 1, duration: 2}], [], [{note: 1, duration: 1}], [{note: 1, duration: 1}], [{note: 6.5, duration: 2}], [],
+  [], [], [], [],
+];
+
+// prettier-ignore
+const TWINKLE: SongType = [
+  [], [], [], [],
+  [{note: 1, duration: 2}], [], [{note: 1, duration: 2}], [], [{note: 5, duration: 2}], [], [{note: 5, duration: 2}], [],
+  [{note: 6, duration: 2}], [], [{note: 6, duration: 2}], [], [{note: 5, duration: 4}], [], [], [],
+  [{note: 4, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [],
+  [{note: 2, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 1, duration: 4}], [], [], [],
+  [{note: 5, duration: 2}], [], [{note: 5, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 4, duration: 2}], [],
+  [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 2, duration: 4}], [], [], [],
+  [{note: 5, duration: 2}], [], [{note: 5, duration: 2}], [], [{note: 4, duration: 2}], [], [{note: 4, duration: 2}], [],
+  [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 2, duration: 4}], [], [], [],
+  [], [], [], [],
+];
+
+// prettier-ignore
+const MARY_HAD_A_LITTLE_LAMB: SongType = [
+  [], [], [], [],
+  [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 1, duration: 2}], [], [{note: 2, duration: 2}], [],
+  [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 4}], [], [], [],
+  [{note: 2, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 2, duration: 4}], [], [], [],
+  [{note: 3, duration: 2}], [], [{note: 5, duration: 2}], [], [{note: 5, duration: 4}], [], [], [],
+  [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 1, duration: 2}], [], [{note: 2, duration: 2}], [],
+  [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 3, duration: 2}], [],
+  [{note: 2, duration: 2}], [], [{note: 2, duration: 2}], [], [{note: 3, duration: 2}], [], [{note: 2, duration: 2}], [],
+  [{note: 1, duration: 8}], [], [], [], [], [], [], [],
+  [], [], [], [],
+];
+
+// prettier-ignore
+const COCKATOO: SongType = [
+  [], [], [], [],
+  [{note: 3, duration: 1}], [{note: 1, duration: 1}], [{note: 2, duration: 1}], [{note: 1, duration: 1}], [{note: 3, duration: 1}], [{note: 1, duration: 1}], [], [],
+  [{note: 2.5, duration: 1}], [{note: 1, duration: 1}], [{note: 2, duration: 1}], [{note: 1, duration: 1}], [{note: 2.5, duration: 0.5}], [], [], [],
+  [{note: 3, duration: 1}], [{note: 3, duration: 1}], [{note: 4, duration: 1}], [{note: 4, duration: 1}], [{note: 5, duration: 1}], [{note: 5, duration: 1}], [{note: 4, duration: 1}], [{note: 4, duration: 1}],
+  [{note: 3, duration: 1}], [{note: 5, duration: 1}], [{note: 4, duration: 1}], [{note: 3, duration: 1}], [], [], [], [],
+  [{note: 4, duration: 1}], [{note: 1, duration: 1}], [{note: 2, duration: 1}], [{note: 1, duration: 1}], [{note: 4, duration: 1}], [{note: 1, duration: 1}], [], [],
+  [{note: 4, duration: 1}], [{note: 1, duration: 1}], [{note: 2, duration: 1}], [{note: 1, duration: 1}], [{note: 4, duration: 0.5}], [], [], [],
+  [{note: 3, duration: 1}, {note: 1, duration: 1}], [{note: 3, duration: 1}, {note: 1, duration: 1}], [{note: 4, duration: 1}, {note: 2, duration: 1}], [{note: 4, duration: 1}, {note: 2, duration: 1}], [{note: 5, duration: 1}, {note: 3, duration: 1}], [{note: 5, duration: 1}, {note: 3, duration: 1}], [{note: 4, duration: 1}, {note: 2, duration: 1}], [{note: 4, duration: 1}, {note: 2, duration: 1}],
+  [{note: 3, duration: 0.5}, {note: 1, duration: 0.5}], [], [{note: 2.5, duration: 1}], [{note: 3, duration: 1}], [], [], [], [],
+  [], [], [], [],
+];
+
+export const SONGS: Array<SongType> = [
+  EVERY_WHITE_KEYS,
+  EVERY_BLACK_KEYS,
+  MARY_HAD_A_LITTLE_LAMB,
+  TWINKLE,
+  JINGLE_BELLS,
+  GIRL_FROM_IPANEMA,
+  COCKATOO,
+  ODE_TO_JOY,
+  HAPPY_BIRTHDAY
+];
